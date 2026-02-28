@@ -1,0 +1,2210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>National Data Library — HM Government</title>
+<style>
+/* ============================================================
+   DESIGN SYSTEM — National Data Library
+   GOV.UK Design System principles, modernised
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=Source+Serif+4:wght@400;600&display=swap');
+
+:root {
+  /* GOV.UK Colours */
+  --gov-blue: #1d70b8;
+  --gov-blue-dark: #003078;
+  --gov-blue-light: #e8f4ff;
+  --gov-green: #00703c;
+  --gov-green-light: #e3f3eb;
+  --gov-orange: #f47738;
+  --gov-orange-light: #fef3eb;
+  --gov-red: #d4351c;
+  --gov-red-light: #fde8e4;
+  --gov-yellow: #ffdd00;
+  --gov-yellow-dark: #594d00;
+
+  /* Neutrals */
+  --bg: #f3f2f1;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --border: #b1b4b6;
+  --border-light: #dee0e2;
+  --text-primary: #0b0c0c;
+  --text-secondary: #505a5f;
+  --text-hint: #6f777b;
+
+  /* Sensitivity colours */
+  --open: #00703c;
+  --open-bg: #e3f3eb;
+  --official: #1d70b8;
+  --official-bg: #e8f4ff;
+  --official-sensitive: #f47738;
+  --official-sensitive-bg: #fef3eb;
+  --secret: #d4351c;
+  --secret-bg: #fde8e4;
+
+  /* Spacing */
+  --sp1: 4px; --sp2: 8px; --sp3: 12px; --sp4: 16px;
+  --sp5: 20px; --sp6: 24px; --sp8: 32px; --sp10: 40px;
+  --sp12: 48px; --sp16: 64px;
+
+  /* Radii */
+  --r1: 2px; --r2: 4px; --r3: 6px; --r4: 8px;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.1), 0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,.12), 0 4px 8px rgba(0,0,0,.06);
+
+  /* Layout */
+  --nav-height: 60px;
+  --sidebar-width: 240px;
+  --sidebar-collapsed: 64px;
+
+  /* Transitions */
+  --t1: 150ms ease;
+  --t2: 250ms ease;
+  --t3: 350ms ease;
+
+  font-family: 'Source Sans 3', 'GDS Transport', arial, sans-serif;
+}
+
+/* RESET */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; overflow: hidden; }
+body { background: var(--bg); color: var(--text-primary); font-size: 16px; line-height: 1.5; }
+a { color: var(--gov-blue); text-decoration: underline; }
+a:hover { color: var(--gov-blue-dark); }
+button { font-family: inherit; cursor: pointer; border: none; background: none; }
+input, select, textarea { font-family: inherit; }
+ul { list-style: none; }
+canvas { display: block; }
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-hint); }
+
+/* ============================================================
+   TOP NAVIGATION
+   ============================================================ */
+#top-nav {
+  position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height);
+  background: var(--gov-blue-dark);
+  display: flex; align-items: center; gap: var(--sp4);
+  padding: 0 var(--sp6);
+  z-index: 100;
+  box-shadow: 0 2px 8px rgba(0,0,0,.3);
+}
+
+.nav-brand {
+  display: flex; align-items: center; gap: var(--sp3);
+  text-decoration: none; color: white; flex-shrink: 0;
+}
+.nav-brand svg { flex-shrink: 0; }
+.nav-brand-text { line-height: 1.1; }
+.nav-brand-gov { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; opacity: .7; font-weight: 600; }
+.nav-brand-name { font-size: 15px; font-weight: 700; white-space: nowrap; }
+
+.nav-search {
+  flex: 1; max-width: 480px; margin: 0 var(--sp6);
+  position: relative;
+}
+.nav-search input {
+  width: 100%; height: 36px;
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: var(--r2);
+  color: white;
+  padding: 0 var(--sp4) 0 36px;
+  font-size: 14px;
+  transition: var(--t2);
+  outline: none;
+}
+.nav-search input::placeholder { color: rgba(255,255,255,.55); }
+.nav-search input:focus { background: rgba(255,255,255,.2); border-color: rgba(255,255,255,.5); }
+.nav-search-icon {
+  position: absolute; left: 10px; top: 50%; transform: translateY(-50%);
+  color: rgba(255,255,255,.6); pointer-events: none;
+}
+
+.nav-actions {
+  display: flex; align-items: center; gap: var(--sp3); margin-left: auto;
+}
+.nav-icon-btn {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r2);
+  color: rgba(255,255,255,.8);
+  transition: var(--t1);
+  position: relative;
+}
+.nav-icon-btn:hover { background: rgba(255,255,255,.12); color: white; }
+
+.notif-badge {
+  position: absolute; top: 4px; right: 4px;
+  width: 16px; height: 16px;
+  background: var(--gov-red);
+  border-radius: 50%;
+  font-size: 9px; font-weight: 700; color: white;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--gov-blue-dark);
+}
+
+/* ROLE SWITCHER */
+.role-switcher {
+  position: relative;
+}
+.role-btn {
+  display: flex; align-items: center; gap: var(--sp2);
+  height: 36px; padding: 0 var(--sp3);
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.2);
+  border-radius: var(--r2);
+  color: white; font-size: 13px; font-weight: 600;
+  transition: var(--t1);
+}
+.role-btn:hover { background: rgba(255,255,255,.2); }
+.role-pill {
+  padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .06em;
+}
+.role-pill.requestor { background: #17a2b8; color: white; }
+.role-pill.owner { background: var(--gov-green); color: white; }
+.role-pill.policymaker { background: #6f42c1; color: white; }
+
+.role-dropdown {
+  position: absolute; top: calc(100% + 8px); right: 0;
+  background: white; border: 1px solid var(--border);
+  border-radius: var(--r3); box-shadow: var(--shadow-lg);
+  width: 220px; overflow: hidden;
+  display: none; z-index: 200;
+}
+.role-dropdown.open { display: block; animation: fadeInDown .15s ease; }
+.role-option {
+  display: flex; align-items: center; gap: var(--sp3);
+  padding: var(--sp3) var(--sp4);
+  color: var(--text-primary); font-size: 14px;
+  transition: var(--t1); cursor: pointer;
+  border-bottom: 1px solid var(--border-light);
+}
+.role-option:last-child { border-bottom: none; }
+.role-option:hover { background: var(--bg); }
+.role-option.active { background: var(--gov-blue-light); }
+.role-option-info { flex: 1; }
+.role-option-name { font-weight: 600; font-size: 13px; }
+.role-option-desc { font-size: 11px; color: var(--text-secondary); margin-top: 1px; }
+
+.user-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: white;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+#app-layout {
+  display: flex;
+  height: 100vh;
+  padding-top: var(--nav-height);
+}
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+#sidebar {
+  width: var(--sidebar-width);
+  background: var(--surface);
+  border-right: 1px solid var(--border-light);
+  display: flex; flex-direction: column;
+  flex-shrink: 0;
+  transition: width var(--t3);
+  overflow: hidden;
+  z-index: 50;
+}
+#sidebar.collapsed { width: var(--sidebar-collapsed); }
+
+.sidebar-toggle {
+  height: 48px; display: flex; align-items: center;
+  padding: 0 var(--sp4);
+  border-bottom: 1px solid var(--border-light);
+  justify-content: flex-end;
+}
+#sidebar.collapsed .sidebar-toggle { justify-content: center; }
+.sidebar-toggle-btn {
+  width: 28px; height: 28px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: var(--r2); color: var(--text-secondary);
+  transition: var(--t1);
+}
+.sidebar-toggle-btn:hover { background: var(--bg); color: var(--text-primary); }
+
+.sidebar-nav { flex: 1; padding: var(--sp2) 0; overflow-y: auto; }
+
+.sidebar-section-label {
+  padding: var(--sp3) var(--sp4) var(--sp1);
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .1em; color: var(--text-hint);
+  white-space: nowrap; overflow: hidden;
+  transition: opacity var(--t2);
+}
+#sidebar.collapsed .sidebar-section-label { opacity: 0; }
+
+.nav-item {
+  display: flex; align-items: center; gap: var(--sp3);
+  padding: var(--sp2) var(--sp4);
+  color: var(--text-secondary);
+  font-size: 14px; font-weight: 500;
+  border-left: 3px solid transparent;
+  cursor: pointer; transition: var(--t1);
+  white-space: nowrap; position: relative;
+  text-decoration: none;
+}
+.nav-item:hover { background: var(--bg); color: var(--text-primary); border-left-color: var(--border); }
+.nav-item.active { background: var(--gov-blue-light); color: var(--gov-blue); border-left-color: var(--gov-blue); font-weight: 600; }
+.nav-item svg { flex-shrink: 0; width: 18px; height: 18px; }
+.nav-item-label { transition: opacity var(--t2); }
+#sidebar.collapsed .nav-item-label { opacity: 0; width: 0; overflow: hidden; }
+
+.nav-badge {
+  margin-left: auto;
+  min-width: 18px; height: 18px;
+  background: var(--gov-blue);
+  border-radius: 9px;
+  font-size: 10px; font-weight: 700; color: white;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 5px;
+  transition: opacity var(--t2);
+}
+#sidebar.collapsed .nav-badge { opacity: 0; }
+
+.sidebar-footer {
+  padding: var(--sp4);
+  border-top: 1px solid var(--border-light);
+}
+.sidebar-user {
+  display: flex; align-items: center; gap: var(--sp3);
+  overflow: hidden;
+}
+.sidebar-user-info { overflow: hidden; }
+.sidebar-user-name { font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.sidebar-user-role { font-size: 11px; color: var(--text-secondary); white-space: nowrap; }
+#sidebar.collapsed .sidebar-user-info { display: none; }
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+#main-content {
+  flex: 1; overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column;
+}
+
+.breadcrumb {
+  padding: var(--sp3) var(--sp8);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border-light);
+  display: flex; align-items: center; gap: var(--sp2);
+  font-size: 13px; color: var(--text-secondary);
+}
+.breadcrumb a { color: var(--gov-blue); text-decoration: none; font-size: 13px; }
+.breadcrumb a:hover { text-decoration: underline; }
+.breadcrumb-sep { color: var(--border); }
+
+.page-content { padding: var(--sp8); flex: 1; }
+
+/* ============================================================
+   CARDS & STAT WIDGETS
+   ============================================================ */
+.stats-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--sp4);
+  margin-bottom: var(--sp8);
+}
+@media (max-width: 1100px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+
+.stat-card {
+  background: var(--surface); border-radius: var(--r3);
+  border: 1px solid var(--border-light);
+  padding: var(--sp5) var(--sp6);
+  box-shadow: var(--shadow-sm);
+  position: relative; overflow: hidden;
+  transition: var(--t2);
+}
+.stat-card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
+.stat-card-accent {
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+}
+.stat-card-icon {
+  width: 40px; height: 40px; border-radius: var(--r3);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: var(--sp3);
+}
+.stat-card-value { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: var(--sp1); font-family: 'Source Serif 4', serif; }
+.stat-card-label { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
+.stat-card-delta {
+  display: inline-flex; align-items: center; gap: 3px;
+  font-size: 12px; font-weight: 600; margin-top: var(--sp2);
+  padding: 2px 6px; border-radius: 10px;
+}
+.stat-card-delta.up { color: var(--gov-green); background: var(--gov-green-light); }
+.stat-card-delta.down { color: var(--gov-red); background: var(--gov-red-light); }
+
+.section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: var(--sp4);
+}
+.section-title { font-size: 18px; font-weight: 700; }
+.section-link { font-size: 13px; color: var(--gov-blue); text-decoration: none; }
+.section-link:hover { text-decoration: underline; }
+
+/* ============================================================
+   DATASET CARDS
+   ============================================================ */
+.dataset-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--sp4);
+  margin-bottom: var(--sp6);
+}
+
+.dataset-card {
+  background: var(--surface); border-radius: var(--r3);
+  border: 1px solid var(--border-light);
+  padding: var(--sp5);
+  box-shadow: var(--shadow-sm);
+  cursor: pointer; transition: var(--t2);
+  position: relative;
+  display: flex; flex-direction: column; gap: var(--sp3);
+}
+.dataset-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); border-color: var(--gov-blue); }
+
+.dataset-card-header { display: flex; align-items: flex-start; gap: var(--sp2); justify-content: space-between; }
+.dataset-card-title { font-size: 15px; font-weight: 700; line-height: 1.3; flex: 1; }
+.dataset-card-dept { display: inline-block; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 10px; background: var(--gov-blue-light); color: var(--gov-blue); margin-bottom: var(--sp1); }
+.dataset-card-desc { font-size: 13px; color: var(--text-secondary); line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.dataset-card-meta { display: flex; align-items: center; gap: var(--sp2); flex-wrap: wrap; margin-top: auto; padding-top: var(--sp2); border-top: 1px solid var(--border-light); }
+.format-tag { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: var(--r1); background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border); text-transform: uppercase; }
+.dataset-card-updated { font-size: 11px; color: var(--text-hint); margin-left: auto; }
+
+.fav-btn { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; color: var(--border); transition: var(--t1); flex-shrink: 0; }
+.fav-btn:hover { color: var(--gov-orange); }
+.fav-btn.active { color: var(--gov-orange); }
+.fav-btn svg { width: 16px; height: 16px; }
+
+/* SENSITIVITY BADGES */
+.sensitivity-badge {
+  font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.sensitivity-badge.open { background: var(--open-bg); color: var(--open); }
+.sensitivity-badge.official { background: var(--official-bg); color: var(--official); }
+.sensitivity-badge.official-sensitive { background: var(--official-sensitive-bg); color: var(--official-sensitive); }
+.sensitivity-badge.secret { background: var(--secret-bg); color: var(--secret); }
+
+/* ============================================================
+   PAGE HEADER STRIP
+   ============================================================ */
+.page-header {
+  background: var(--surface); border-bottom: 1px solid var(--border-light);
+  padding: var(--sp6) var(--sp8);
+}
+.page-header-title { font-size: 26px; font-weight: 700; margin-bottom: var(--sp1); font-family: 'Source Serif 4', serif; }
+.page-header-subtitle { font-size: 14px; color: var(--text-secondary); }
+
+/* ============================================================
+   CATALOGUE PAGE
+   ============================================================ */
+#view-catalogue { display: flex; gap: 0; height: 100%; }
+
+.filter-panel {
+  width: 260px; flex-shrink: 0;
+  background: var(--surface);
+  border-right: 1px solid var(--border-light);
+  overflow-y: auto; padding: var(--sp5);
+}
+.filter-panel-title { font-size: 14px; font-weight: 700; margin-bottom: var(--sp4); }
+
+.filter-group { margin-bottom: var(--sp5); }
+.filter-group-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-secondary); margin-bottom: var(--sp2); }
+.filter-option { display: flex; align-items: center; gap: var(--sp2); padding: var(--sp1) 0; cursor: pointer; }
+.filter-option input[type=checkbox] { width: 16px; height: 16px; accent-color: var(--gov-blue); cursor: pointer; }
+.filter-option-label { font-size: 13px; color: var(--text-primary); }
+.filter-option-count { font-size: 11px; color: var(--text-hint); margin-left: auto; }
+
+.catalogue-main { flex: 1; overflow-y: auto; padding: var(--sp5) var(--sp6); }
+
+.catalogue-toolbar {
+  display: flex; align-items: center; gap: var(--sp3);
+  margin-bottom: var(--sp5);
+}
+.catalogue-search {
+  flex: 1; position: relative;
+}
+.catalogue-search input {
+  width: 100%; height: 40px;
+  border: 1px solid var(--border);
+  border-radius: var(--r2); padding: 0 var(--sp4) 0 38px;
+  font-size: 14px; outline: none; transition: var(--t2);
+  background: var(--surface);
+}
+.catalogue-search input:focus { border-color: var(--gov-blue); box-shadow: 0 0 0 3px rgba(29,112,184,.15); }
+.catalogue-search-icon { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--text-hint); }
+
+.view-toggle { display: flex; border: 1px solid var(--border); border-radius: var(--r2); overflow: hidden; }
+.view-toggle-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: var(--t1); }
+.view-toggle-btn.active { background: var(--gov-blue); color: white; }
+.view-toggle-btn:hover:not(.active) { background: var(--bg); }
+
+.catalogue-results-count { font-size: 13px; color: var(--text-secondary); margin-bottom: var(--sp3); }
+
+.active-filters { display: flex; flex-wrap: wrap; gap: var(--sp2); margin-bottom: var(--sp3); }
+.filter-chip {
+  display: inline-flex; align-items: center; gap: var(--sp1);
+  padding: 3px 10px; border-radius: 12px;
+  background: var(--gov-blue-light); color: var(--gov-blue);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: var(--t1);
+}
+.filter-chip:hover { background: #cce0f5; }
+.filter-chip-x { font-size: 14px; line-height: 1; opacity: .7; }
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.data-table-wrap { overflow-x: auto; border: 1px solid var(--border-light); border-radius: var(--r3); background: var(--surface); }
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.data-table th {
+  padding: var(--sp3) var(--sp4); text-align: left;
+  background: var(--bg); color: var(--text-secondary);
+  font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap; cursor: pointer; user-select: none;
+}
+.data-table th:hover { color: var(--text-primary); }
+.data-table th .sort-icon { margin-left: 4px; opacity: .5; }
+.data-table td { padding: var(--sp3) var(--sp4); border-bottom: 1px solid var(--border-light); color: var(--text-primary); vertical-align: middle; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #fafafa; }
+
+/* STATUS BADGES */
+.status-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 10px; font-size: 11px; font-weight: 700; }
+.status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.status-badge.pending { color: #b45309; background: #fef3c7; }
+.status-badge.approved { color: var(--gov-green); background: var(--gov-green-light); }
+.status-badge.rejected { color: var(--gov-red); background: var(--gov-red-light); }
+.status-badge.active { color: var(--gov-blue); background: var(--gov-blue-light); }
+.status-badge.expired { color: var(--text-hint); background: var(--bg); }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn {
+  display: inline-flex; align-items: center; gap: var(--sp2);
+  padding: 8px 16px; border-radius: var(--r2);
+  font-size: 14px; font-weight: 600; font-family: inherit;
+  cursor: pointer; transition: var(--t1);
+  text-decoration: none; white-space: nowrap;
+}
+.btn-primary { background: var(--gov-blue); color: white; }
+.btn-primary:hover { background: var(--gov-blue-dark); }
+.btn-secondary { background: var(--surface); color: var(--gov-blue); border: 2px solid var(--gov-blue); }
+.btn-secondary:hover { background: var(--gov-blue-light); }
+.btn-success { background: var(--gov-green); color: white; }
+.btn-success:hover { background: #005a30; }
+.btn-danger { background: var(--gov-red); color: white; }
+.btn-danger:hover { background: #aa2a16; }
+.btn-ghost { background: transparent; color: var(--text-secondary); }
+.btn-ghost:hover { background: var(--bg); color: var(--text-primary); }
+.btn-sm { padding: 5px 12px; font-size: 12px; }
+.btn-icon { padding: 8px; }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,.45);
+  z-index: 500; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity var(--t2);
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--surface); border-radius: var(--r4);
+  box-shadow: var(--shadow-lg); width: 560px; max-width: 95vw;
+  max-height: 90vh; overflow-y: auto;
+  transform: scale(.96) translateY(8px);
+  transition: transform var(--t2);
+}
+.modal-overlay.open .modal { transform: scale(1) translateY(0); }
+.modal-header { padding: var(--sp6); border-bottom: 1px solid var(--border-light); display: flex; align-items: center; justify-content: space-between; }
+.modal-title { font-size: 18px; font-weight: 700; }
+.modal-close { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: var(--r2); color: var(--text-secondary); transition: var(--t1); }
+.modal-close:hover { background: var(--bg); color: var(--text-primary); }
+.modal-body { padding: var(--sp6); }
+.modal-footer { padding: var(--sp5) var(--sp6); border-top: 1px solid var(--border-light); display: flex; gap: var(--sp3); justify-content: flex-end; }
+
+/* FORM FIELDS */
+.form-group { margin-bottom: var(--sp5); }
+.form-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: var(--sp2); }
+.form-label span { color: var(--gov-red); margin-left: 3px; }
+.form-hint { font-size: 12px; color: var(--text-secondary); margin-bottom: var(--sp2); }
+.form-control {
+  width: 100%; border: 2px solid var(--border);
+  border-radius: var(--r2); padding: 8px 12px;
+  font-size: 14px; outline: none; transition: var(--t2);
+  background: var(--surface);
+}
+.form-control:focus { border-color: var(--gov-blue); }
+.form-control.error { border-color: var(--gov-red); }
+.form-error { font-size: 12px; color: var(--gov-red); margin-top: var(--sp1); display: flex; align-items: center; gap: 4px; }
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+#toast-container {
+  position: fixed; bottom: var(--sp6); right: var(--sp6);
+  z-index: 1000; display: flex; flex-direction: column; gap: var(--sp2);
+}
+.toast {
+  display: flex; align-items: center; gap: var(--sp3);
+  padding: var(--sp3) var(--sp5); border-radius: var(--r3);
+  box-shadow: var(--shadow-md); font-size: 14px; font-weight: 500;
+  background: var(--text-primary); color: white;
+  animation: slideInRight .25s ease forwards;
+  max-width: 360px;
+}
+.toast.success { background: var(--gov-green); }
+.toast.error { background: var(--gov-red); }
+.toast.info { background: var(--gov-blue); }
+@keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+@keyframes fadeOut { to { opacity: 0; transform: translateX(100%); } }
+@keyframes fadeInDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tabs { border-bottom: 2px solid var(--border-light); display: flex; gap: 0; margin-bottom: var(--sp6); }
+.tab-btn {
+  padding: var(--sp3) var(--sp5);
+  font-size: 14px; font-weight: 500;
+  color: var(--text-secondary);
+  border-bottom: 3px solid transparent;
+  margin-bottom: -2px;
+  transition: var(--t1); cursor: pointer;
+}
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { color: var(--gov-blue); border-bottom-color: var(--gov-blue); font-weight: 700; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn .2s ease; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+/* ============================================================
+   DATASET DETAIL
+   ============================================================ */
+.detail-header {
+  background: var(--surface); padding: var(--sp6) var(--sp8);
+  border-bottom: 1px solid var(--border-light);
+}
+.detail-header-meta { display: flex; align-items: center; gap: var(--sp3); margin-bottom: var(--sp3); flex-wrap: wrap; }
+.detail-header-title { font-size: 28px; font-weight: 700; font-family: 'Source Serif 4', serif; margin-bottom: var(--sp3); line-height: 1.2; }
+.detail-header-actions { display: flex; gap: var(--sp3); flex-wrap: wrap; }
+
+.detail-content { padding: var(--sp6) var(--sp8); }
+
+.info-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp4); margin-bottom: var(--sp6); }
+.info-item { background: var(--bg); border-radius: var(--r2); padding: var(--sp4); }
+.info-item-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-secondary); margin-bottom: var(--sp1); }
+.info-item-value { font-size: 15px; font-weight: 600; }
+
+.quality-row { margin-bottom: var(--sp4); }
+.quality-label { display: flex; justify-content: space-between; font-size: 13px; font-weight: 600; margin-bottom: var(--sp2); }
+.quality-bar { height: 8px; background: var(--border-light); border-radius: 4px; overflow: hidden; }
+.quality-fill { height: 100%; border-radius: 4px; transition: width 1s ease; }
+
+/* LINEAGE CANVAS */
+.lineage-wrap { background: var(--bg); border-radius: var(--r3); overflow: hidden; }
+
+/* ============================================================
+   ANALYTICS
+   ============================================================ */
+.charts-grid { display: grid; grid-template-columns: 2fr 1fr; gap: var(--sp5); margin-bottom: var(--sp6); }
+.chart-card { background: var(--surface); border-radius: var(--r3); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); padding: var(--sp5); }
+.chart-title { font-size: 15px; font-weight: 700; margin-bottom: var(--sp4); }
+
+.heatmap-grid { overflow-x: auto; }
+.heatmap-table { border-collapse: collapse; font-size: 11px; }
+.heatmap-table th { padding: 4px 8px; font-weight: 600; color: var(--text-secondary); }
+.heatmap-table td { width: 40px; height: 34px; text-align: center; border: 2px solid white; border-radius: 3px; font-weight: 600; font-size: 10px; cursor: pointer; transition: var(--t1); }
+.heatmap-table td:hover { opacity: .8; transform: scale(1.1); }
+
+/* ============================================================
+   MESSAGES
+   ============================================================ */
+.messages-layout { display: flex; height: calc(100vh - var(--nav-height) - 60px); }
+.messages-list { width: 320px; flex-shrink: 0; border-right: 1px solid var(--border-light); overflow-y: auto; background: var(--surface); }
+.messages-thread { flex: 1; display: flex; flex-direction: column; background: var(--surface); }
+
+.message-item {
+  padding: var(--sp4); border-bottom: 1px solid var(--border-light);
+  cursor: pointer; transition: var(--t1); display: flex; gap: var(--sp3);
+}
+.message-item:hover { background: var(--bg); }
+.message-item.active { background: var(--gov-blue-light); border-left: 3px solid var(--gov-blue); }
+.message-item.unread .message-subject { font-weight: 700; }
+.message-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+.message-meta { flex: 1; overflow: hidden; }
+.message-sender { font-size: 13px; font-weight: 600; }
+.message-subject { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.message-preview { font-size: 12px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.message-time { font-size: 11px; color: var(--text-hint); flex-shrink: 0; }
+
+.thread-header { padding: var(--sp5); border-bottom: 1px solid var(--border-light); }
+.thread-title { font-size: 17px; font-weight: 700; }
+.thread-meta { font-size: 12px; color: var(--text-secondary); margin-top: 3px; }
+.thread-messages { flex: 1; overflow-y: auto; padding: var(--sp5); display: flex; flex-direction: column; gap: var(--sp4); }
+.thread-msg { max-width: 75%; }
+.thread-msg.sent { align-self: flex-end; }
+.thread-msg.received { align-self: flex-start; }
+.thread-msg-bubble {
+  padding: var(--sp3) var(--sp4); border-radius: var(--r3);
+  font-size: 14px; line-height: 1.5;
+}
+.thread-msg.sent .thread-msg-bubble { background: var(--gov-blue); color: white; border-bottom-right-radius: var(--r1); }
+.thread-msg.received .thread-msg-bubble { background: var(--bg); color: var(--text-primary); border-bottom-left-radius: var(--r1); }
+.thread-msg-meta { font-size: 11px; color: var(--text-hint); margin-top: 3px; }
+.thread-msg.sent .thread-msg-meta { text-align: right; }
+.thread-input-bar { padding: var(--sp4); border-top: 1px solid var(--border-light); display: flex; gap: var(--sp3); }
+.thread-input { flex: 1; border: 1px solid var(--border); border-radius: var(--r2); padding: 8px 12px; font-size: 14px; outline: none; resize: none; height: 40px; }
+.thread-input:focus { border-color: var(--gov-blue); }
+
+/* ============================================================
+   NETWORK DIAGRAM (placeholder for canvas)
+   ============================================================ */
+.network-wrap { background: #0a192f; border-radius: var(--r3); overflow: hidden; }
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp5); }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: var(--sp4); }
+
+.empty-state { padding: var(--sp16); text-align: center; color: var(--text-secondary); }
+.empty-state-icon { font-size: 48px; margin-bottom: var(--sp3); }
+.empty-state-title { font-size: 18px; font-weight: 700; color: var(--text-primary); margin-bottom: var(--sp2); }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; background: var(--bg); color: var(--text-secondary); border: 1px solid var(--border); margin: 2px; }
+
+/* Pagination */
+.pagination { display: flex; align-items: center; gap: var(--sp2); margin-top: var(--sp5); justify-content: center; }
+.page-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--border); border-radius: var(--r2); font-size: 13px; color: var(--text-secondary); cursor: pointer; transition: var(--t1); }
+.page-btn:hover { border-color: var(--gov-blue); color: var(--gov-blue); }
+.page-btn.active { background: var(--gov-blue); border-color: var(--gov-blue); color: white; }
+
+/* FOOTER */
+#footer {
+  background: var(--gov-blue-dark); color: rgba(255,255,255,.6);
+  font-size: 12px; padding: var(--sp4) var(--sp8);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: var(--sp3);
+  flex-shrink: 0;
+}
+#footer a { color: rgba(255,255,255,.8); text-decoration: none; }
+#footer a:hover { text-decoration: underline; }
+#footer .footer-links { display: flex; gap: var(--sp4); }
+
+/* ============================================================
+   LOADING SKELETON
+   ============================================================ */
+.skeleton { animation: shimmer 1.4s infinite linear; background: linear-gradient(90deg, var(--border-light) 25%, #e9eaeb 50%, var(--border-light) 75%); background-size: 200% 100%; border-radius: var(--r2); }
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+
+/* ============================================================
+   VIEWS HIDDEN/SHOWN
+   ============================================================ */
+.view { display: none; flex-direction: column; height: 100%; }
+.view.active { display: flex; }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     TOP NAVIGATION
+     ============================================================ -->
+<nav id="top-nav" role="navigation" aria-label="Main navigation">
+  <!-- Crown / Brand -->
+  <a class="nav-brand" href="#" aria-label="National Data Library Home">
+    <svg width="30" height="26" viewBox="0 0 30 26" fill="none" aria-hidden="true">
+      <rect x="5" y="14" width="20" height="10" fill="white" opacity=".9" rx="1"/>
+      <rect x="0" y="18" width="30" height="2" fill="white" opacity=".6"/>
+      <path d="M15 2 L20 10 H10 Z" fill="white"/>
+      <rect x="8" y="8" width="3" height="6" fill="white" opacity=".8"/>
+      <rect x="13.5" y="8" width="3" height="6" fill="white" opacity=".8"/>
+      <rect x="19" y="8" width="3" height="6" fill="white" opacity=".8"/>
+    </svg>
+    <div class="nav-brand-text">
+      <div class="nav-brand-gov">HM Government</div>
+      <div class="nav-brand-name">National Data Library</div>
+    </div>
+  </a>
+
+  <!-- Global Search -->
+  <div class="nav-search" role="search">
+    <svg class="nav-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="search" placeholder="Search datasets, departments, topics…" aria-label="Global search" id="global-search">
+  </div>
+
+  <div class="nav-actions">
+    <!-- Notifications -->
+    <button class="nav-icon-btn" aria-label="Notifications (3 unread)" title="Notifications">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span class="notif-badge" aria-label="3 notifications">3</span>
+    </button>
+
+    <!-- Help -->
+    <button class="nav-icon-btn" aria-label="Help" title="Help">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </button>
+
+    <!-- Role Switcher -->
+    <div class="role-switcher" id="role-switcher">
+      <button class="role-btn" id="role-btn" aria-haspopup="true" aria-expanded="false">
+        <span class="role-pill requestor" id="role-pill">Requestor</span>
+        <span id="role-name">Data Requestor</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+      <div class="role-dropdown" id="role-dropdown" role="menu">
+        <div class="role-option active" data-role="requestor" role="menuitem" tabindex="0">
+          <div class="user-avatar" style="background:#17a2b8">AR</div>
+          <div class="role-option-info">
+            <div class="role-option-name">Data Requestor</div>
+            <div class="role-option-desc">Discover and request datasets</div>
+          </div>
+        </div>
+        <div class="role-option" data-role="owner" role="menuitem" tabindex="0">
+          <div class="user-avatar" style="background:#00703c">SO</div>
+          <div class="role-option-info">
+            <div class="role-option-name">Data Owner</div>
+            <div class="role-option-desc">Publish and manage datasets</div>
+          </div>
+        </div>
+        <div class="role-option" data-role="policymaker" role="menuitem" tabindex="0">
+          <div class="user-avatar" style="background:#6f42c1">PM</div>
+          <div class="role-option-info">
+            <div class="role-option-name">Policy Maker</div>
+            <div class="role-option-desc">Analytics and governance view</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- User Avatar -->
+    <div class="user-avatar" style="background:#1d70b8" title="Aisha Rahman — DWP" aria-label="User: Aisha Rahman">AR</div>
+  </div>
+</nav>
+
+<!-- ============================================================
+     APP LAYOUT
+     ============================================================ -->
+<div id="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside id="sidebar" role="complementary" aria-label="Application navigation">
+    <div class="sidebar-toggle">
+      <button class="sidebar-toggle-btn" id="sidebar-toggle" aria-label="Toggle sidebar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav" aria-label="Section navigation">
+      <div class="sidebar-section-label">Main</div>
+      <a class="nav-item active" data-view="dashboard" href="#dashboard" aria-current="page">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span class="nav-item-label">Dashboard</span>
+      </a>
+      <a class="nav-item" data-view="catalogue" href="#catalogue">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        <span class="nav-item-label">Data Catalogue</span>
+      </a>
+
+      <div class="sidebar-section-label" id="role-section-label" style="margin-top:8px">My Work</div>
+      <a class="nav-item" data-view="requests" href="#requests" id="nav-requests">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+        <span class="nav-item-label" id="nav-requests-label">My Requests</span>
+        <span class="nav-badge">4</span>
+      </a>
+      <a class="nav-item" data-view="analytics" href="#analytics" id="nav-analytics">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span class="nav-item-label" id="nav-analytics-label">Analytics</span>
+      </a>
+      <a class="nav-item" data-view="messages" href="#messages">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span class="nav-item-label">Messages</span>
+        <span class="nav-badge" style="background:var(--gov-red)">2</span>
+      </a>
+
+      <div class="sidebar-section-label" style="margin-top:8px">Account</div>
+      <a class="nav-item" href="#settings">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+        <span class="nav-item-label">Settings</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="user-avatar" style="background:#1d70b8; width:32px;height:32px;font-size:12px">AR</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Aisha Rahman</div>
+          <div class="sidebar-user-role">Dept. for Work & Pensions</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div id="main-content">
+
+    <!-- BREADCRUMB -->
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+      <a href="#dashboard">National Data Library</a>
+      <span class="breadcrumb-sep" aria-hidden="true">›</span>
+      <span id="breadcrumb-current">Dashboard</span>
+    </nav>
+
+    <!-- ====================================================
+         VIEW: DASHBOARD
+         ==================================================== -->
+    <div id="view-dashboard" class="view active">
+      <div class="page-header">
+        <div class="page-header-title" id="dashboard-title">Good morning, Aisha</div>
+        <div class="page-header-subtitle" id="dashboard-subtitle">Here's what's happening across the National Data Library today</div>
+      </div>
+      <div class="page-content" style="overflow-y:auto;flex:1">
+
+        <!-- STAT CARDS (role-dependent) -->
+        <div class="stats-grid" id="stats-grid"></div>
+
+        <!-- TWO-COLUMN: Charts / Lists -->
+        <div id="dashboard-main-content"></div>
+
+      </div>
+    </div>
+
+    <!-- ====================================================
+         VIEW: CATALOGUE
+         ==================================================== -->
+    <div id="view-catalogue" class="view" style="flex-direction:row">
+      <!-- Filter Panel -->
+      <aside class="filter-panel" aria-label="Dataset filters">
+        <div class="filter-panel-title">Filter Datasets</div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Department</div>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="DWP"> <span class="filter-option-label">DWP</span><span class="filter-option-count">18</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="HMRC"> <span class="filter-option-label">HMRC</span><span class="filter-option-count">12</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="NHS England"> <span class="filter-option-label">NHS England</span><span class="filter-option-count">24</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="ONS"> <span class="filter-option-label">ONS</span><span class="filter-option-count">31</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="Home Office"> <span class="filter-option-label">Home Office</span><span class="filter-option-count">9</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="MHCLG"> <span class="filter-option-label">MHCLG</span><span class="filter-option-count">14</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="HMLR"> <span class="filter-option-label">HMLR</span><span class="filter-option-count">7</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="DfE"> <span class="filter-option-label">DfE</span><span class="filter-option-count">16</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="dept" value="MOJ"> <span class="filter-option-label">MOJ</span><span class="filter-option-count">8</span></label>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Sensitivity</div>
+          <label class="filter-option"><input type="checkbox" data-filter="sensitivity" value="Open"> <span class="filter-option-label">Open</span><span class="filter-option-count">62</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="sensitivity" value="Official"> <span class="filter-option-label">Official</span><span class="filter-option-count">48</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="sensitivity" value="Official-Sensitive"> <span class="filter-option-label">Official-Sensitive</span><span class="filter-option-count">23</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="sensitivity" value="Secret"> <span class="filter-option-label">Secret</span><span class="filter-option-count">5</span></label>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Theme</div>
+          <label class="filter-option"><input type="checkbox" data-filter="theme" value="Health"> <span class="filter-option-label">Health</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="theme" value="Economy"> <span class="filter-option-label">Economy</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="theme" value="Housing"> <span class="filter-option-label">Housing</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="theme" value="Justice"> <span class="filter-option-label">Justice</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="theme" value="Transport"> <span class="filter-option-label">Transport</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="theme" value="Education"> <span class="filter-option-label">Education</span></label>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-group-title">Format</div>
+          <label class="filter-option"><input type="checkbox" data-filter="format" value="CSV"> <span class="filter-option-label">CSV</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="format" value="JSON"> <span class="filter-option-label">JSON</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="format" value="API"> <span class="filter-option-label">API</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="format" value="Parquet"> <span class="filter-option-label">Parquet</span></label>
+          <label class="filter-option"><input type="checkbox" data-filter="format" value="XLSX"> <span class="filter-option-label">XLSX</span></label>
+        </div>
+      </aside>
+
+      <!-- Catalogue Main -->
+      <div class="catalogue-main">
+        <div class="catalogue-toolbar">
+          <div class="catalogue-search">
+            <svg class="catalogue-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="search" placeholder="Search datasets…" id="catalogue-search" aria-label="Search datasets">
+          </div>
+          <div class="view-toggle" role="group" aria-label="View mode">
+            <button class="view-toggle-btn active" id="grid-view-btn" aria-label="Grid view" title="Grid view">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            </button>
+            <button class="view-toggle-btn" id="list-view-btn" aria-label="List view" title="List view">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            </button>
+          </div>
+          <button class="btn btn-primary btn-sm" id="open-request-modal">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Request
+          </button>
+        </div>
+
+        <div class="active-filters" id="active-filters"></div>
+        <div class="catalogue-results-count" id="results-count">Showing 12 datasets</div>
+        <div id="catalogue-results"></div>
+        <div class="pagination" id="pagination">
+          <button class="page-btn">‹</button>
+          <button class="page-btn active">1</button>
+          <button class="page-btn">2</button>
+          <button class="page-btn">3</button>
+          <button class="page-btn">›</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         VIEW: DATASET DETAIL
+         ==================================================== -->
+    <div id="view-detail" class="view">
+      <div class="detail-header">
+        <div class="detail-header-meta" id="detail-meta"></div>
+        <div class="detail-header-title" id="detail-title"></div>
+        <div class="detail-header-actions" id="detail-actions">
+          <button class="btn btn-primary" onclick="openRequestModal()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Request Access
+          </button>
+          <button class="btn btn-secondary">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Download Sample
+          </button>
+          <button class="btn btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Watchlist
+          </button>
+          <button class="btn btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+            Share
+          </button>
+        </div>
+      </div>
+
+      <div class="detail-content" style="overflow-y:auto;flex:1">
+        <div class="tabs" id="detail-tabs" role="tablist">
+          <button class="tab-btn active" data-tab="overview" role="tab" aria-selected="true">Overview</button>
+          <button class="tab-btn" data-tab="schema" role="tab">Schema</button>
+          <button class="tab-btn" data-tab="lineage" role="tab">Lineage</button>
+          <button class="tab-btn" data-tab="quality" role="tab">Quality</button>
+          <button class="tab-btn" data-tab="access-history" role="tab">Access History</button>
+          <button class="tab-btn" data-tab="related" role="tab">Related Datasets</button>
+        </div>
+
+        <!-- Overview -->
+        <div class="tab-panel active" id="tab-overview">
+          <div class="info-grid" id="detail-info-grid"></div>
+          <div style="margin-bottom:var(--sp5)">
+            <div class="section-title" style="font-size:16px;margin-bottom:var(--sp3)">Description</div>
+            <p id="detail-description" style="font-size:14px;line-height:1.7;color:var(--text-secondary);max-width:720px"></p>
+          </div>
+          <div>
+            <div class="section-title" style="font-size:16px;margin-bottom:var(--sp3)">Tags</div>
+            <div id="detail-tags"></div>
+          </div>
+        </div>
+
+        <!-- Schema -->
+        <div class="tab-panel" id="tab-schema">
+          <div class="data-table-wrap">
+            <table class="data-table" id="schema-table">
+              <thead>
+                <tr>
+                  <th>Field Name</th><th>Data Type</th><th>Description</th>
+                  <th>Nullable</th><th>PII</th><th>Format</th>
+                </tr>
+              </thead>
+              <tbody id="schema-tbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Lineage -->
+        <div class="tab-panel" id="tab-lineage">
+          <div class="lineage-wrap" style="padding:var(--sp5)">
+            <canvas id="lineage-canvas" height="180" style="width:100%"></canvas>
+          </div>
+        </div>
+
+        <!-- Quality -->
+        <div class="tab-panel" id="tab-quality">
+          <div style="max-width:560px">
+            <div class="quality-row"><div class="quality-label"><span>Completeness</span><span id="q-completeness">92%</span></div><div class="quality-bar"><div class="quality-fill" style="width:92%;background:var(--gov-green)"></div></div></div>
+            <div class="quality-row"><div class="quality-label"><span>Accuracy</span><span id="q-accuracy">87%</span></div><div class="quality-bar"><div class="quality-fill" style="width:87%;background:var(--gov-blue)"></div></div></div>
+            <div class="quality-row"><div class="quality-label"><span>Timeliness</span><span id="q-timeliness">78%</span></div><div class="quality-bar"><div class="quality-fill" style="width:78%;background:var(--gov-orange)"></div></div></div>
+            <div class="quality-row"><div class="quality-label"><span>Consistency</span><span id="q-consistency">95%</span></div><div class="quality-bar"><div class="quality-fill" style="width:95%;background:var(--gov-green)"></div></div></div>
+            <div class="quality-row"><div class="quality-label"><span>Uniqueness</span><span id="q-uniqueness">99%</span></div><div class="quality-bar"><div class="quality-fill" style="width:99%;background:var(--gov-green)"></div></div></div>
+          </div>
+        </div>
+
+        <!-- Access History -->
+        <div class="tab-panel" id="tab-access-history">
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Department</th><th>Purpose</th><th>Granted</th><th>Expiry</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td>HMRC</td><td>Fraud analysis correlation</td><td>12 Jan 2024</td><td>12 Jan 2025</td><td><span class="status-badge expired">Expired</span></td></tr>
+                <tr><td>ONS</td><td>Labour market statistics</td><td>3 Mar 2024</td><td>3 Mar 2026</td><td><span class="status-badge active">Active</span></td></tr>
+                <tr><td>NHS England</td><td>Healthcare deprivation study</td><td>18 Jun 2024</td><td>18 Jun 2025</td><td><span class="status-badge active">Active</span></td></tr>
+                <tr><td>MOJ</td><td>Reoffending risk modelling</td><td>9 Sep 2023</td><td>9 Sep 2024</td><td><span class="status-badge expired">Expired</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Related Datasets -->
+        <div class="tab-panel" id="tab-related">
+          <div class="three-col" id="related-datasets"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         VIEW: REQUESTS
+         ==================================================== -->
+    <div id="view-requests" class="view">
+      <div class="page-header" style="display:flex;align-items:center;justify-content:space-between">
+        <div>
+          <div class="page-header-title" id="requests-page-title">My Data Requests</div>
+          <div class="page-header-subtitle">Track and manage your dataset access requests</div>
+        </div>
+        <button class="btn btn-primary" id="new-request-btn" onclick="openRequestModal()">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          New Request
+        </button>
+      </div>
+      <div style="padding:var(--sp5) var(--sp8);overflow-y:auto;flex:1">
+        <div class="tabs" id="requests-tabs" role="tablist">
+          <button class="tab-btn active" data-rtab="all">All (12)</button>
+          <button class="tab-btn" data-rtab="pending">Pending (4)</button>
+          <button class="tab-btn" data-rtab="approved">Approved (5)</button>
+          <button class="tab-btn" data-rtab="rejected">Rejected (2)</button>
+          <button class="tab-btn" data-rtab="expired">Expired (1)</button>
+        </div>
+        <div class="data-table-wrap">
+          <table class="data-table" id="requests-table">
+            <thead>
+              <tr>
+                <th>Dataset <span class="sort-icon">↕</span></th>
+                <th>Department <span class="sort-icon">↕</span></th>
+                <th>Purpose</th>
+                <th>Sensitivity</th>
+                <th>Submitted <span class="sort-icon">↕</span></th>
+                <th>Status <span class="sort-icon">↕</span></th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="requests-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         VIEW: ANALYTICS
+         ==================================================== -->
+    <div id="view-analytics" class="view">
+      <div class="page-header">
+        <div class="page-header-title">Analytics &amp; Insights</div>
+        <div class="page-header-subtitle">Cross-departmental data sharing trends and usage metrics</div>
+      </div>
+      <div class="page-content" style="overflow-y:auto;flex:1">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-card-accent" style="background:linear-gradient(90deg,var(--gov-blue),var(--gov-blue-dark))"></div>
+            <div class="stat-card-value">1,284</div>
+            <div class="stat-card-label">Total Requests YTD</div>
+            <div class="stat-card-delta up">↑ 18% vs last year</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-accent" style="background:linear-gradient(90deg,var(--gov-green),#004d27)"></div>
+            <div class="stat-card-value">847</div>
+            <div class="stat-card-label">Requests Approved</div>
+            <div class="stat-card-delta up">↑ 66% approval rate</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-accent" style="background:linear-gradient(90deg,var(--gov-orange),#c05a1a)"></div>
+            <div class="stat-card-value">23</div>
+            <div class="stat-card-label">Depts. Sharing Data</div>
+            <div class="stat-card-delta up">↑ 4 new this quarter</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-card-accent" style="background:linear-gradient(90deg,#6f42c1,#4a2d80)"></div>
+            <div class="stat-card-value">4.7<span style="font-size:18px">/5</span></div>
+            <div class="stat-card-label">Data Quality Index</div>
+            <div class="stat-card-delta up">↑ 0.3 improvement</div>
+          </div>
+        </div>
+
+        <div class="charts-grid">
+          <div class="chart-card">
+            <div class="chart-title">Monthly Request Trends (2024)</div>
+            <canvas id="trends-chart" height="220"></canvas>
+          </div>
+          <div class="chart-card">
+            <div class="chart-title">Requests by Department</div>
+            <canvas id="dept-chart" height="220"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card" style="margin-bottom:var(--sp5)">
+          <div class="chart-title">Top 10 Most Requested Datasets</div>
+          <canvas id="top-datasets-chart" height="200"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-title">Cross-Departmental Data Sharing Heatmap</div>
+          <p style="font-size:12px;color:var(--text-secondary);margin-bottom:var(--sp4)">Number of approved data sharing agreements between departments. Darker = more sharing.</p>
+          <div class="heatmap-grid" id="heatmap-container"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====================================================
+         VIEW: MESSAGES
+         ==================================================== -->
+    <div id="view-messages" class="view">
+      <div class="page-header">
+        <div class="page-header-title">Messages</div>
+        <div class="page-header-subtitle">Data access notifications and communications</div>
+      </div>
+      <div class="messages-layout">
+        <div class="messages-list" id="messages-list"></div>
+        <div class="messages-thread">
+          <div class="thread-header">
+            <div class="thread-title" id="thread-title">RE: Access Request — Universal Credit Claimants 2023-24</div>
+            <div class="thread-meta">Sarah Owen (DWP Data Team) · 2 participants</div>
+          </div>
+          <div class="thread-messages" id="thread-messages">
+            <div class="thread-msg received">
+              <div class="thread-msg-bubble">Hello Aisha, I've received your access request for the Universal Credit Claimants dataset. Could you please provide more detail on the intended analytical use case and confirm your DPA registration number?</div>
+              <div class="thread-msg-meta">Sarah Owen · 14 Jan 2025, 09:32</div>
+            </div>
+            <div class="thread-msg sent">
+              <div class="thread-msg-bubble">Hi Sarah, thanks for getting back to me. Our DPA reference is ZA-127834. We're looking to analyse claimant trends in relation to the recent welfare reform pilot in the North East. The data will be processed in the DWP's secure analytical environment.</div>
+              <div class="thread-msg-meta">You · 14 Jan 2025, 11:17</div>
+            </div>
+            <div class="thread-msg received">
+              <div class="thread-msg-bubble">Thank you, that's all in order. I've forwarded this to our Data Governance team for sign-off. You should receive a decision within 5 working days. In the meantime, would you be happy to sign the Data Sharing Agreement template I'll send over?</div>
+              <div class="thread-msg-meta">Sarah Owen · 14 Jan 2025, 14:55</div>
+            </div>
+            <div class="thread-msg sent">
+              <div class="thread-msg-bubble">Absolutely, please do send the DSA. Happy to review and sign.</div>
+              <div class="thread-msg-meta">You · 15 Jan 2025, 08:44</div>
+            </div>
+          </div>
+          <div class="thread-input-bar">
+            <textarea class="thread-input" placeholder="Write a message…" aria-label="Message input" rows="1"></textarea>
+            <button class="btn btn-primary btn-sm">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer id="footer" role="contentinfo">
+      <span>Built for HM Government · National Data Library v1.0 · © Crown Copyright 2025</span>
+      <div class="footer-links">
+        <a href="#">Accessibility Statement</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Contact</a>
+        <a href="#">Open Government Licence</a>
+      </div>
+    </footer>
+  </div>
+</div>
+
+<!-- ============================================================
+     REQUEST ACCESS MODAL
+     ============================================================ -->
+<div class="modal-overlay" id="request-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modal-title">Request Dataset Access</div>
+      <button class="modal-close" onclick="closeRequestModal()" aria-label="Close modal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label class="form-label" for="modal-dataset">Dataset<span>*</span></label>
+        <input class="form-control" type="text" id="modal-dataset" placeholder="Search for a dataset…" value="">
+        <div class="form-error" id="err-dataset" style="display:none">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Please select a dataset
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="modal-purpose">Purpose of Use<span>*</span></label>
+        <div class="form-hint">Briefly describe why you need access to this data</div>
+        <textarea class="form-control" id="modal-purpose" rows="3" placeholder="e.g. Analysing claimant trends for welfare reform evaluation…"></textarea>
+        <div class="form-error" id="err-purpose" style="display:none">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Please describe the purpose of use
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="modal-legal-basis">Legal Basis<span>*</span></label>
+        <select class="form-control" id="modal-legal-basis">
+          <option value="">Select legal basis…</option>
+          <option>GDPR Article 6(1)(e) — Public task</option>
+          <option>GDPR Article 6(1)(c) — Legal obligation</option>
+          <option>GDPR Article 9(2)(g) — Substantial public interest</option>
+          <option>Data Sharing Agreement (Existing)</option>
+          <option>Statistics and Registration Service Act 2007</option>
+          <option>Digital Economy Act 2017</option>
+        </select>
+        <div class="form-error" id="err-legal" style="display:none">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Please select a legal basis
+        </div>
+      </div>
+      <div class="two-col">
+        <div class="form-group">
+          <label class="form-label" for="modal-duration">Intended Duration</label>
+          <select class="form-control" id="modal-duration">
+            <option>3 months</option>
+            <option>6 months</option>
+            <option selected>12 months</option>
+            <option>24 months</option>
+            <option>Ongoing (subject to annual review)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="modal-environment">Processing Environment</label>
+          <select class="form-control" id="modal-environment">
+            <option>Departmental Secure Environment</option>
+            <option>ONS Secure Research Service (SRS)</option>
+            <option>UKSA Approved Research Platform</option>
+            <option>Cloud (Gov.UK PaaS)</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="modal-justification">Data Minimisation Justification</label>
+        <div class="form-hint">Explain why access to the full dataset (vs a subset) is required</div>
+        <textarea class="form-control" id="modal-justification" rows="2" placeholder="We require the full dataset because…"></textarea>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost" onclick="closeRequestModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="submitRequest()">Submit Request</button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container" aria-live="polite" aria-label="Notifications"></div>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+// ============================================================
+// DATA STORE — realistic UK government datasets
+// ============================================================
+const DATASETS = [
+  { id:1,  title:'Universal Credit Claimants 2023-24', dept:'DWP', sensitivity:'Official-Sensitive', theme:'Economy', formats:['CSV','Parquet'], updated:'Jan 2025', desc:'Monthly statistics on Universal Credit caseload, flows and characteristics for Great Britain, including age, gender, region and conditionality regime.', rows:'2.4M', size:'1.8 GB', freq:'Monthly', licence:'Restricted', tags:['welfare','benefits','claimants','employment'] },
+  { id:2,  title:'NHS Hospital Episode Statistics', dept:'NHS England', sensitivity:'Official-Sensitive', theme:'Health', formats:['Parquet','API'], updated:'Dec 2024', desc:'Administrative data on admitted patient care, outpatient appointments and A&E attendances across all NHS trusts in England.', rows:'28M', size:'18.4 GB', freq:'Quarterly', licence:'Restricted', tags:['NHS','hospitals','admissions','health'] },
+  { id:3,  title:'Land Registry Price Paid Data', dept:'HMLR', sensitivity:'Open', theme:'Housing', formats:['CSV','JSON','API'], updated:'Jan 2025', desc:'Records of all residential property sales in England and Wales submitted to HM Land Registry since January 1995.', rows:'30M', size:'4.2 GB', freq:'Monthly', licence:'OGL', tags:['housing','property','transactions','prices'] },
+  { id:4,  title:'Police Recorded Crime Statistics', dept:'Home Office', sensitivity:'Official', theme:'Justice', formats:['CSV','XLSX'], updated:'Oct 2024', desc:'Annual and quarterly data on offences recorded by the 43 territorial police forces of England and Wales, broken down by offence type and geography.', rows:'6.8M', size:'820 MB', freq:'Quarterly', licence:'OGL', tags:['crime','police','offences','safety'] },
+  { id:5,  title:'Census 2021 Output Areas', dept:'ONS', sensitivity:'Open', theme:'Economy', formats:['CSV','JSON','API'], updated:'Mar 2023', desc:'Detailed population, household and labour market statistics from the 2021 Census of England and Wales, aggregated to Output Area level.', rows:'188K', size:'2.1 GB', freq:'Decennial', licence:'OGL', tags:['census','population','demographics','geography'] },
+  { id:6,  title:'Planning Applications Pipeline', dept:'MHCLG', sensitivity:'Official', theme:'Housing', formats:['CSV','API'], updated:'Jan 2025', desc:'Live feed and historical records of planning applications submitted to local planning authorities in England, including status, type and decision dates.', rows:'4.1M', size:'640 MB', freq:'Weekly', licence:'OGL', tags:['planning','housing','development','local-authority'] },
+  { id:7,  title:'HMRC VAT Registration Data', dept:'HMRC', sensitivity:'Official-Sensitive', theme:'Economy', formats:['Parquet'], updated:'Dec 2024', desc:'Anonymised dataset of VAT-registered businesses in the UK, including sector classifications, registration and deregistration events.', rows:'3.6M', size:'2.8 GB', freq:'Annual', licence:'Restricted', tags:['VAT','tax','business','HMRC'] },
+  { id:8,  title:'School Performance Tables', dept:'DfE', sensitivity:'Open', theme:'Education', formats:['CSV','XLSX','API'], updated:'Jan 2025', desc:'National and school-level attainment and progress measures for Key Stages 2 and 4 across all maintained schools and academies in England.', rows:'24K', size:'180 MB', freq:'Annual', licence:'OGL', tags:['schools','education','attainment','ofsted'] },
+  { id:9,  title:'Road Traffic Accident Data (STATS19)', dept:'DfT', sensitivity:'Open', theme:'Transport', formats:['CSV'], updated:'Sep 2024', desc:'Detailed statistics on personal injury road accidents in Great Britain, including vehicle, casualty and location characteristics since 1979.', rows:'1.9M', size:'390 MB', freq:'Annual', licence:'OGL', tags:['roads','accidents','transport','safety'] },
+  { id:10, title:'Prison Population Statistics', dept:'MOJ', sensitivity:'Official', theme:'Justice', formats:['CSV','XLSX'], updated:'Dec 2024', desc:'Monthly statistics on the prison population in England and Wales, broken down by establishment, sex, nationality, offence type and sentence length.', rows:'88K', size:'45 MB', freq:'Monthly', licence:'OGL', tags:['prisons','custody','justice','sentencing'] },
+  { id:11, title:'Carbon Emissions by Sector', dept:'DESNZ', sensitivity:'Open', theme:'Economy', formats:['CSV','XLSX'], updated:'Feb 2025', desc:'UK greenhouse gas emissions estimates by source sector (energy, transport, industry, agriculture, waste) from 1990 to 2023, based on IPCC guidelines.', rows:'4.2K', size:'12 MB', freq:'Annual', licence:'OGL', tags:['climate','emissions','environment','net-zero'] },
+  { id:12, title:'Social Housing Allocations', dept:'MHCLG', sensitivity:'Official', theme:'Housing', formats:['CSV','JSON'], updated:'Nov 2024', desc:'Annual statistics on the number and characteristics of social housing lettings and sales, including waiting lists and allocations by local authority.', rows:'430K', size:'95 MB', freq:'Annual', licence:'OGL', tags:['social-housing','council','allocations','waiting-list'] },
+];
+
+const REQUESTS = [
+  { id:1, dataset:'Census 2021 Output Areas', dept:'ONS', purpose:'Demographic analysis for pilot', sensitivity:'Open', submitted:'03 Jan 2025', status:'approved' },
+  { id:2, dataset:'NHS Hospital Episode Statistics', dept:'NHS England', purpose:'Healthcare access modelling', sensitivity:'Official-Sensitive', submitted:'08 Jan 2025', status:'pending' },
+  { id:3, dataset:'Universal Credit Claimants 2023-24', dept:'DWP', purpose:'Welfare reform evaluation', sensitivity:'Official-Sensitive', submitted:'10 Jan 2025', status:'pending' },
+  { id:4, dataset:'School Performance Tables', dept:'DfE', purpose:'Cross-cutting analysis of outcomes', sensitivity:'Open', submitted:'12 Jan 2025', status:'approved' },
+  { id:5, dataset:'Prison Population Statistics', dept:'MOJ', purpose:'Reoffending risk modelling', sensitivity:'Official', submitted:'14 Jan 2025', status:'pending' },
+  { id:6, dataset:'HMRC VAT Registration Data', dept:'HMRC', purpose:'Business growth analysis', sensitivity:'Official-Sensitive', submitted:'15 Jan 2025', status:'rejected' },
+  { id:7, dataset:'Planning Applications Pipeline', dept:'MHCLG', purpose:'Housing delivery forecasting', sensitivity:'Official', submitted:'17 Jan 2025', status:'approved' },
+  { id:8, dataset:'Carbon Emissions by Sector', dept:'DESNZ', purpose:'Net zero policy modelling', sensitivity:'Open', submitted:'18 Jan 2025', status:'approved' },
+  { id:9, dataset:'Police Recorded Crime Statistics', dept:'Home Office', purpose:'Cross-cutting safety analysis', sensitivity:'Official', submitted:'20 Jan 2025', status:'pending' },
+  { id:10, dataset:'Land Registry Price Paid Data', dept:'HMLR', purpose:'Housing affordability research', sensitivity:'Open', submitted:'22 Jan 2025', status:'approved' },
+  { id:11, dataset:'Road Traffic Accident Data (STATS19)', dept:'DfT', purpose:'Transport safety strategy', sensitivity:'Open', submitted:'24 Jan 2025', status:'rejected' },
+  { id:12, dataset:'Social Housing Allocations', dept:'MHCLG', purpose:'Homelessness prevention programme', sensitivity:'Official', submitted:'25 Jan 2025', status:'expired' },
+];
+
+const MESSAGES = [
+  { id:1, sender:'Sarah Owen', dept:'DWP', subject:'RE: Access Request — Universal Credit', preview:'Thank you for providing your DPA reference...', time:'14 Jan', unread:true, color:'#1d70b8' },
+  { id:2, sender:'James Chen', dept:'ONS', subject:'Dataset Updated: Census 2021 OA', preview:'We have published a revised version of the...', time:'10 Jan', unread:true, color:'#00703c' },
+  { id:3, sender:'Data Governance Team', dept:'MHCLG', subject:'Policy Update: Data Sharing Agreements', preview:'Please review the new standard clauses for...', time:'7 Jan', unread:false, color:'#6f42c1' },
+  { id:4, sender:'Dr Helen Walsh', dept:'NHS England', subject:'Access Approved: HES Outpatients 2024', preview:'Your request has been reviewed and approved...', time:'3 Jan', unread:false, color:'#d4351c' },
+  { id:5, sender:'NDL System', dept:'National Data Library', subject:'Watchlist Alert: STATS19 Updated', preview:'A dataset on your watchlist has been updated...', time:'28 Dec', unread:false, color:'#f47738' },
+];
+
+const SCHEMA_FIELDS = [
+  { name:'claimant_id', type:'STRING', desc:'Anonymised claimant identifier', nullable:'No', pii:'No', format:'UUID' },
+  { name:'assessment_period', type:'DATE', desc:'Assessment period start date', nullable:'No', pii:'No', format:'YYYY-MM' },
+  { name:'region_code', type:'STRING', desc:'ONS region code', nullable:'No', pii:'No', format:'E12XXXXXX' },
+  { name:'local_authority', type:'STRING', desc:'Local authority district name', nullable:'No', pii:'No', format:'Free text' },
+  { name:'age_band', type:'STRING', desc:'Five-year age band of claimant', nullable:'No', pii:'No', format:'16-24, 25-34…' },
+  { name:'gender', type:'STRING', desc:'Claimant gender (M/F/Other)', nullable:'Yes', pii:'No', format:'Enum' },
+  { name:'conditionality_regime', type:'STRING', desc:'Labour market conditionality group', nullable:'No', pii:'No', format:'Enum' },
+  { name:'payment_amount_band', type:'STRING', desc:'Banded payment amount (£)', nullable:'Yes', pii:'No', format:'Enum' },
+  { name:'housing_element', type:'BOOLEAN', desc:'Whether housing cost element included', nullable:'No', pii:'No', format:'TRUE/FALSE' },
+  { name:'disability_element', type:'BOOLEAN', desc:'Whether LCWRA element included', nullable:'No', pii:'No', format:'TRUE/FALSE' },
+];
+
+// ============================================================
+// STATE
+// ============================================================
+let currentRole = 'requestor';
+let currentView = 'dashboard';
+let activeDataset = null;
+let isGridView = true;
+let currentRequestTab = 'all';
+let activeMessage = 0;
+let sidebarCollapsed = false;
+
+// ============================================================
+// COLOUR UTILITIES
+// ============================================================
+function sensitivityBadge(s) {
+  const map = { 'Open':'open','Official':'official','Official-Sensitive':'official-sensitive','Secret':'secret' };
+  return `<span class="sensitivity-badge ${map[s]||'official'}">${s}</span>`;
+}
+function deptColor(dept) {
+  const colors = ['#1d70b8','#00703c','#6f42c1','#d4351c','#f47738','#17a2b8','#e83e8c','#fd7e14','#20c997','#343a40'];
+  let h=0; for(let c of dept) h=(h*31+c.charCodeAt(0))%colors.length;
+  return colors[h];
+}
+function deptAvatar(dept) {
+  const initials = dept.split(' ').slice(0,2).map(w=>w[0]).join('');
+  return `<div style="width:28px;height:28px;border-radius:50%;background:${deptColor(dept)};display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:white;flex-shrink:0">${initials}</div>`;
+}
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+document.querySelectorAll('.nav-item[data-view]').forEach(item => {
+  item.addEventListener('click', e => {
+    e.preventDefault();
+    navigateTo(item.dataset.view);
+  });
+});
+
+function navigateTo(view) {
+  currentView = view;
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => {
+    n.classList.toggle('active', n.dataset.view === view);
+    n.setAttribute('aria-current', n.dataset.view === view ? 'page' : 'false');
+  });
+  document.getElementById(`view-${view}`).classList.add('active');
+  const labels = { dashboard:'Dashboard', catalogue:'Data Catalogue', requests:currentRole==='owner'?'Incoming Requests':'My Requests', analytics:'Analytics', messages:'Messages', detail:'Dataset Detail' };
+  document.getElementById('breadcrumb-current').textContent = labels[view] || view;
+  if(view === 'analytics') setTimeout(renderAnalyticsCharts, 100);
+  if(view === 'messages') renderMessages();
+}
+
+// ============================================================
+// ROLE SWITCHER
+// ============================================================
+const roleBtn = document.getElementById('role-btn');
+const roleDropdown = document.getElementById('role-dropdown');
+
+roleBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const open = roleDropdown.classList.toggle('open');
+  roleBtn.setAttribute('aria-expanded', open);
+});
+document.addEventListener('click', () => { roleDropdown.classList.remove('open'); roleBtn.setAttribute('aria-expanded','false'); });
+
+document.querySelectorAll('.role-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    currentRole = opt.dataset.role;
+    switchRole(currentRole);
+    roleDropdown.classList.remove('open');
+    document.querySelectorAll('.role-option').forEach(o => o.classList.toggle('active', o===opt));
+  });
+  opt.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') opt.click(); });
+});
+
+function switchRole(role) {
+  const configs = {
+    requestor: { pill:'Requestor', pillClass:'requestor', name:'Data Requestor', user:'Aisha Rahman', userAbbr:'AR', userDept:'Dept. for Work & Pensions', userColor:'#1d70b8', requestsLabel:'My Requests', analyticsLabel:'Analytics' },
+    owner:      { pill:'Data Owner', pillClass:'owner', name:'Data Owner', user:'Sarah Owen', userAbbr:'SO', userDept:'DWP — Data Team', userColor:'#00703c', requestsLabel:'Incoming Requests', analyticsLabel:'Analytics' },
+    policymaker:{ pill:'Policy Maker', pillClass:'policymaker', name:'Policy Maker', user:'Peter Morrison', userAbbr:'PM', userDept:'Cabinet Office', userColor:'#6f42c1', requestsLabel:'Access Log', analyticsLabel:'Analytics' },
+  };
+  const c = configs[role];
+  document.getElementById('role-pill').textContent = c.pill;
+  document.getElementById('role-pill').className = `role-pill ${c.pillClass}`;
+  document.getElementById('role-name').textContent = c.name;
+  document.getElementById('nav-requests-label').textContent = c.requestsLabel;
+  document.getElementById('requests-page-title').textContent = c.requestsLabel;
+  document.getElementById('new-request-btn').style.display = role==='owner' ? 'none' : '';
+  document.getElementById('open-request-modal').style.display = role==='owner' ? 'none' : '';
+  document.querySelectorAll('.user-avatar[title]').forEach(a => { a.textContent=c.userAbbr; a.style.background=c.userColor; });
+  document.querySelector('.sidebar-user-name').textContent = c.user;
+  document.querySelector('.sidebar-user-role').textContent = c.userDept;
+  const greetings = { requestor:'Good morning, Aisha', owner:'Good morning, Sarah', policymaker:'Good morning, Peter' };
+  document.getElementById('dashboard-title').textContent = greetings[role];
+  renderDashboard(role);
+  showToast(`Switched to ${c.name} view`, 'info');
+}
+
+// ============================================================
+// SIDEBAR TOGGLE
+// ============================================================
+document.getElementById('sidebar-toggle').addEventListener('click', () => {
+  sidebarCollapsed = !sidebarCollapsed;
+  document.getElementById('sidebar').classList.toggle('collapsed', sidebarCollapsed);
+});
+
+// ============================================================
+// DASHBOARD RENDERING
+// ============================================================
+const STATS_CONFIGS = {
+  requestor: [
+    { val:'2,847', label:'Datasets Available', delta:'↑ 156 new this month', up:true, color:'var(--gov-blue)', icon:'📁' },
+    { val:'4', label:'My Active Requests', delta:'2 awaiting decision', up:null, color:'var(--gov-orange)', icon:'📋' },
+    { val:'12', label:'Approved Accesses', delta:'↑ 3 this quarter', up:true, color:'var(--gov-green)', icon:'✅' },
+    { val:'2', label:'Pending Approvals', delta:'Avg. 3 days wait', up:null, color:'#6f42c1', icon:'⏳' },
+  ],
+  owner: [
+    { val:'24', label:'Datasets Published', delta:'↑ 2 this month', up:true, color:'var(--gov-blue)', icon:'📊' },
+    { val:'18', label:'Incoming Requests', delta:'6 need action', up:null, color:'var(--gov-orange)', icon:'📥' },
+    { val:'31', label:'Active Agreements', delta:'↑ 4 vs last quarter', up:true, color:'var(--gov-green)', icon:'📝' },
+    { val:'94%', label:'Compliance Score', delta:'↑ 2pp improvement', up:true, color:'#6f42c1', icon:'🛡️' },
+  ],
+  policymaker: [
+    { val:'23', label:'Depts. Sharing Data', delta:'↑ 4 new this quarter', up:true, color:'var(--gov-blue)', icon:'🏛️' },
+    { val:'187', label:'Cross-dept Linkages', delta:'↑ 22 this year', up:true, color:'var(--gov-orange)', icon:'🔗' },
+    { val:'14', label:'Policy Frameworks', delta:'3 under review', up:null, color:'var(--gov-green)', icon:'📜' },
+    { val:'4.7', label:'Data Quality Index', delta:'↑ 0.3 improvement', up:true, color:'#6f42c1', icon:'⭐' },
+  ],
+};
+
+const ACCENT_GRADIENTS = [
+  'linear-gradient(90deg,var(--gov-blue),var(--gov-blue-dark))',
+  'linear-gradient(90deg,var(--gov-orange),#c05a1a)',
+  'linear-gradient(90deg,var(--gov-green),#004d27)',
+  'linear-gradient(90deg,#6f42c1,#4a2d80)',
+];
+
+function renderDashboard(role) {
+  const grid = document.getElementById('stats-grid');
+  const stats = STATS_CONFIGS[role];
+  grid.innerHTML = stats.map((s,i) => `
+    <div class="stat-card">
+      <div class="stat-card-accent" style="background:${ACCENT_GRADIENTS[i]}"></div>
+      <div class="stat-card-value">${s.val}</div>
+      <div class="stat-card-label">${s.label}</div>
+      ${s.up!==null ? `<div class="stat-card-delta ${s.up?'up':''}">` + s.delta + '</div>' : `<div style="font-size:12px;color:var(--text-hint);margin-top:8px">${s.delta}</div>`}
+    </div>`).join('');
+
+  const main = document.getElementById('dashboard-main-content');
+
+  if(role === 'requestor') {
+    main.innerHTML = `
+      <div class="section-header">
+        <div class="section-title">Recommended Datasets</div>
+        <a class="section-link" href="#" onclick="navigateTo('catalogue');return false">View all →</a>
+      </div>
+      <div class="dataset-grid" id="recommended-grid"></div>
+      <div class="section-header" style="margin-top:var(--sp5)">
+        <div class="section-title">Recently Viewed</div>
+      </div>
+      <div style="display:flex;gap:var(--sp3);overflow-x:auto;padding-bottom:var(--sp3)">
+        ${DATASETS.slice(0,5).map(d=>`
+        <div onclick="openDetail(${d.id})" style="min-width:220px;background:var(--surface);border:1px solid var(--border-light);border-radius:var(--r3);padding:var(--sp4);cursor:pointer;box-shadow:var(--shadow-sm);transition:var(--t2)" onmouseenter="this.style.transform='translateY(-2px)'" onmouseleave="this.style.transform=''">
+          <div style="font-size:12px;color:var(--gov-blue);font-weight:700;margin-bottom:4px">${d.dept}</div>
+          <div style="font-size:13px;font-weight:700;line-height:1.3">${d.title}</div>
+          <div style="margin-top:8px">${sensitivityBadge(d.sensitivity)}</div>
+        </div>`).join('')}
+      </div>`;
+    const rg = document.getElementById('recommended-grid');
+    rg.innerHTML = DATASETS.slice(5,9).map(d => datasetCardHTML(d)).join('');
+    attachCardListeners(rg);
+
+  } else if(role === 'owner') {
+    main.innerHTML = `
+      <div class="two-col">
+        <div>
+          <div class="section-header"><div class="section-title">Request Volume (Monthly)</div></div>
+          <div class="chart-card" style="padding:var(--sp4)"><canvas id="owner-bar-chart" height="180"></canvas></div>
+        </div>
+        <div>
+          <div class="section-header"><div class="section-title">Recent Access Requests</div><a class="section-link" href="#" onclick="navigateTo('requests');return false">View all →</a></div>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead><tr><th>Requestor</th><th>Dataset</th><th>Status</th></tr></thead>
+              <tbody>${REQUESTS.slice(0,6).map(r=>`
+                <tr><td><div style="font-weight:600;font-size:13px">${r.dept}</div></td><td><div style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px">${r.dataset}</div></td><td><span class="status-badge ${r.status}">${r.status.charAt(0).toUpperCase()+r.status.slice(1)}</span></td></tr>`).join('')}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>`;
+    setTimeout(() => drawOwnerBarChart(), 100);
+
+  } else if(role === 'policymaker') {
+    main.innerHTML = `
+      <div class="section-header"><div class="section-title">Department Data Flow Network</div></div>
+      <div class="network-wrap" style="margin-bottom:var(--sp5)">
+        <canvas id="network-canvas" height="400" style="width:100%"></canvas>
+      </div>
+      <div class="section-header" style="margin-top:var(--sp5)"><div class="section-title">Key Cross-Departmental Linkages</div></div>
+      <div class="data-table-wrap">
+        <table class="data-table">
+          <thead><tr><th>Source Dept</th><th>Target Dept</th><th>Dataset</th><th>Volume</th><th>Status</th></tr></thead>
+          <tbody>
+            <tr><td>DWP</td><td>HMRC</td><td>Universal Credit Claimants</td><td>2.4M records</td><td><span class="status-badge active">Active</span></td></tr>
+            <tr><td>NHS England</td><td>ONS</td><td>Hospital Episode Statistics</td><td>28M records</td><td><span class="status-badge active">Active</span></td></tr>
+            <tr><td>HMLR</td><td>MHCLG</td><td>Price Paid Data</td><td>30M records</td><td><span class="status-badge active">Active</span></td></tr>
+            <tr><td>Home Office</td><td>MOJ</td><td>Crime Statistics</td><td>6.8M records</td><td><span class="status-badge active">Active</span></td></tr>
+            <tr><td>DfE</td><td>DWP</td><td>School Performance Tables</td><td>24K records</td><td><span class="status-badge pending">Pending</span></td></tr>
+          </tbody>
+        </table>
+      </div>`;
+    setTimeout(() => drawNetworkDiagram(), 100);
+  }
+}
+
+// ============================================================
+// DATASET CARDS
+// ============================================================
+function datasetCardHTML(d) {
+  const sensClass = d.sensitivity.toLowerCase().replace(' ','-').replace(/[^a-z-]/g,'');
+  return `<div class="dataset-card" data-id="${d.id}" role="article" tabindex="0">
+    <div>
+      <div class="dataset-card-dept">${d.dept}</div>
+      <div class="dataset-card-header">
+        <div class="dataset-card-title">${d.title}</div>
+        <button class="fav-btn" aria-label="Favourite ${d.title}" onclick="event.stopPropagation();this.classList.toggle('active')">
+          <svg viewBox="0 0 24 24" fill="${'none'}" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
+      </div>
+      <div class="dataset-card-desc">${d.desc}</div>
+    </div>
+    <div class="dataset-card-meta">
+      ${sensitivityBadge(d.sensitivity)}
+      ${d.formats.map(f=>`<span class="format-tag">${f}</span>`).join('')}
+      <span class="dataset-card-updated">Updated: ${d.updated}</span>
+    </div>
+  </div>`;
+}
+
+function attachCardListeners(container) {
+  container.querySelectorAll('.dataset-card').forEach(card => {
+    card.addEventListener('click', () => openDetail(+card.dataset.id));
+    card.addEventListener('keydown', e => { if(e.key==='Enter'||e.key===' ') openDetail(+card.dataset.id); });
+  });
+}
+
+// ============================================================
+// CATALOGUE
+// ============================================================
+function renderCatalogue(datasets) {
+  const container = document.getElementById('catalogue-results');
+  if(!datasets.length) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🔍</div><div class="empty-state-title">No datasets found</div><p>Try adjusting your filters or search terms</p></div>';
+    document.getElementById('results-count').textContent = 'No results found';
+    return;
+  }
+  document.getElementById('results-count').textContent = `Showing ${datasets.length} dataset${datasets.length!==1?'s':''}`;
+  if(isGridView) {
+    container.innerHTML = `<div class="dataset-grid">${datasets.map(d => datasetCardHTML(d)).join('')}</div>`;
+  } else {
+    container.innerHTML = `<div class="data-table-wrap">
+      <table class="data-table"><thead><tr>
+        <th>Dataset ↕</th><th>Department ↕</th><th>Theme</th>
+        <th>Sensitivity ↕</th><th>Format</th><th>Updated ↕</th><th>Actions</th>
+      </tr></thead><tbody>
+      ${datasets.map(d=>`<tr onclick="openDetail(${d.id})" style="cursor:pointer">
+        <td><div style="font-weight:700;font-size:13px">${d.title}</div></td>
+        <td><div style="display:flex;align-items:center;gap:8px">${deptAvatar(d.dept)}<span style="font-size:13px">${d.dept}</span></div></td>
+        <td><span style="font-size:12px;color:var(--text-secondary)">${d.theme}</span></td>
+        <td>${sensitivityBadge(d.sensitivity)}</td>
+        <td>${d.formats.map(f=>`<span class="format-tag">${f}</span>`).join(' ')}</td>
+        <td style="font-size:12px;color:var(--text-secondary)">${d.updated}</td>
+        <td><button class="btn btn-primary btn-sm" onclick="event.stopPropagation();openDetail(${d.id})">View</button></td>
+      </tr>`).join('')}
+      </tbody></table></div>`;
+  }
+  attachCardListeners(container);
+}
+
+let catalogueSearchVal = '';
+let activeFilters = {};
+
+function filterDatasets() {
+  let results = DATASETS;
+  if(catalogueSearchVal) {
+    const q = catalogueSearchVal.toLowerCase();
+    results = results.filter(d => d.title.toLowerCase().includes(q) || d.dept.toLowerCase().includes(q) || d.desc.toLowerCase().includes(q) || d.tags.some(t=>t.includes(q)));
+  }
+  Object.entries(activeFilters).forEach(([key, vals]) => {
+    if(!vals.length) return;
+    if(key==='dept') results = results.filter(d=>vals.includes(d.dept));
+    if(key==='sensitivity') results = results.filter(d=>vals.includes(d.sensitivity));
+    if(key==='theme') results = results.filter(d=>vals.includes(d.theme));
+    if(key==='format') results = results.filter(d=>d.formats.some(f=>vals.includes(f)));
+  });
+  renderCatalogue(results);
+  renderActiveFilterChips();
+}
+
+document.getElementById('catalogue-search').addEventListener('input', e => {
+  catalogueSearchVal = e.target.value;
+  filterDatasets();
+});
+document.getElementById('global-search').addEventListener('input', e => {
+  if(currentView !== 'catalogue') navigateTo('catalogue');
+  document.getElementById('catalogue-search').value = e.target.value;
+  catalogueSearchVal = e.target.value;
+  filterDatasets();
+});
+
+document.querySelectorAll('input[data-filter]').forEach(cb => {
+  cb.addEventListener('change', () => {
+    const key = cb.dataset.filter;
+    if(!activeFilters[key]) activeFilters[key]=[];
+    if(cb.checked) activeFilters[key].push(cb.value);
+    else activeFilters[key] = activeFilters[key].filter(v=>v!==cb.value);
+    filterDatasets();
+  });
+});
+
+function renderActiveFilterChips() {
+  const container = document.getElementById('active-filters');
+  const chips = [];
+  Object.entries(activeFilters).forEach(([key, vals]) => vals.forEach(v => chips.push({key,v})));
+  container.innerHTML = chips.map(c=>`<div class="filter-chip" onclick="removeFilter('${c.key}','${c.v}')">${c.v} <span class="filter-chip-x">×</span></div>`).join('');
+}
+function removeFilter(key, val) {
+  document.querySelector(`input[data-filter="${key}"][value="${val}"]`).checked = false;
+  activeFilters[key] = (activeFilters[key]||[]).filter(v=>v!==val);
+  filterDatasets();
+}
+
+// View toggle
+document.getElementById('grid-view-btn').addEventListener('click', () => { isGridView=true; document.getElementById('grid-view-btn').classList.add('active'); document.getElementById('list-view-btn').classList.remove('active'); filterDatasets(); });
+document.getElementById('list-view-btn').addEventListener('click', () => { isGridView=false; document.getElementById('list-view-btn').classList.add('active'); document.getElementById('grid-view-btn').classList.remove('active'); filterDatasets(); });
+
+// ============================================================
+// DATASET DETAIL
+// ============================================================
+function openDetail(id) {
+  activeDataset = DATASETS.find(d=>d.id===id);
+  if(!activeDataset) return;
+  const d = activeDataset;
+
+  document.getElementById('detail-meta').innerHTML = `
+    ${deptAvatar(d.dept)}
+    <span style="font-weight:700;font-size:13px">${d.dept}</span>
+    ${sensitivityBadge(d.sensitivity)}
+    <span class="format-tag">${d.theme}</span>
+    <span style="font-size:12px;color:var(--text-secondary)">Version 2.1 · Updated ${d.updated}</span>`;
+
+  document.getElementById('detail-title').textContent = d.title;
+  document.getElementById('detail-description').textContent = d.desc;
+
+  document.getElementById('detail-info-grid').innerHTML = `
+    <div class="info-item"><div class="info-item-label">Rows</div><div class="info-item-value">${d.rows}</div></div>
+    <div class="info-item"><div class="info-item-label">File Size</div><div class="info-item-value">${d.size}</div></div>
+    <div class="info-item"><div class="info-item-label">Update Frequency</div><div class="info-item-value">${d.freq}</div></div>
+    <div class="info-item"><div class="info-item-label">Format</div><div class="info-item-value">${d.formats.join(', ')}</div></div>
+    <div class="info-item"><div class="info-item-label">Licence</div><div class="info-item-value">${d.licence}</div></div>
+    <div class="info-item"><div class="info-item-label">Sensitivity</div><div class="info-item-value">${d.sensitivity}</div></div>`;
+
+  document.getElementById('detail-tags').innerHTML = d.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+
+  // Schema
+  document.getElementById('schema-tbody').innerHTML = SCHEMA_FIELDS.map(f=>`
+    <tr>
+      <td><code style="font-size:12px;background:var(--bg);padding:2px 6px;border-radius:3px">${f.name}</code></td>
+      <td><span style="font-size:11px;color:var(--gov-blue);font-weight:700">${f.type}</span></td>
+      <td style="max-width:200px;font-size:13px">${f.desc}</td>
+      <td style="text-align:center">${f.nullable==='Yes'?'<span style="color:var(--text-hint)">✓</span>':'<span style="color:var(--gov-green)">●</span>'}</td>
+      <td style="text-align:center">${f.pii==='Yes'?'<span style="color:var(--gov-red);font-weight:700">PII</span>':'—'}</td>
+      <td style="font-size:12px;color:var(--text-secondary)">${f.format}</td>
+    </tr>`).join('');
+
+  // Related
+  const others = DATASETS.filter(x=>x.id!==id&&x.dept===d.dept||x.theme===d.theme).slice(0,3);
+  document.getElementById('related-datasets').innerHTML = others.map(x=>datasetCardHTML(x)).join('');
+  attachCardListeners(document.getElementById('related-datasets'));
+
+  // Set modal dataset
+  document.getElementById('modal-dataset').value = d.title;
+
+  navigateTo('detail');
+  document.getElementById('breadcrumb-current').textContent = d.title.substring(0,40)+'…';
+
+  // Activate first tab
+  activateDetailTab('overview');
+
+  setTimeout(drawLineageDiagram, 100);
+}
+
+// Detail tabs
+document.getElementById('detail-tabs').querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => activateDetailTab(btn.dataset.tab));
+});
+function activateDetailTab(tab) {
+  document.querySelectorAll('#detail-tabs .tab-btn').forEach(b => { b.classList.toggle('active', b.dataset.tab===tab); b.setAttribute('aria-selected', b.dataset.tab===tab); });
+  document.querySelectorAll('#view-detail .tab-panel').forEach(p => p.classList.toggle('active', p.id===`tab-${tab}`));
+}
+
+// ============================================================
+// REQUESTS VIEW
+// ============================================================
+function renderRequests(filter) {
+  let rows = REQUESTS;
+  if(filter && filter!=='all') rows = rows.filter(r=>r.status===filter);
+  document.getElementById('requests-tbody').innerHTML = rows.map(r=>`
+    <tr>
+      <td><div style="font-weight:700;font-size:13px">${r.dataset}</div></td>
+      <td><div style="display:flex;align-items:center;gap:8px">${deptAvatar(r.dept)}<span style="font-size:13px">${r.dept}</span></div></td>
+      <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:13px">${r.purpose}</td>
+      <td>${sensitivityBadge(r.sensitivity)}</td>
+      <td style="font-size:13px;color:var(--text-secondary);white-space:nowrap">${r.submitted}</td>
+      <td><span class="status-badge ${r.status}">${r.status.charAt(0).toUpperCase()+r.status.slice(1)}</span></td>
+      <td>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-ghost btn-sm" onclick="openDetail(${Math.min(r.id,12)})">View</button>
+          ${currentRole==='owner'&&r.status==='pending'?`<button class="btn btn-success btn-sm" onclick="approveRequest(${r.id})">Approve</button><button class="btn btn-danger btn-sm" onclick="rejectRequest(${r.id})">Reject</button>`:''}
+          ${currentRole==='requestor'&&r.status==='pending'?`<button class="btn btn-ghost btn-sm" style="color:var(--gov-red)">Withdraw</button>`:''}
+        </div>
+      </td>
+    </tr>`).join('');
+}
+
+document.getElementById('requests-tabs').querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#requests-tabs .tab-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRequests(btn.dataset.rtab);
+  });
+});
+
+function approveRequest(id) {
+  const r = REQUESTS.find(x=>x.id===id);
+  if(r){ r.status='approved'; renderRequests(currentRequestTab); showToast(`Request approved for ${r.dataset}`, 'success'); }
+}
+function rejectRequest(id) {
+  const r = REQUESTS.find(x=>x.id===id);
+  if(r){ r.status='rejected'; renderRequests(currentRequestTab); showToast(`Request rejected`, 'error'); }
+}
+
+// ============================================================
+// MESSAGES
+// ============================================================
+function renderMessages() {
+  const list = document.getElementById('messages-list');
+  list.innerHTML = MESSAGES.map((m,i)=>`
+    <div class="message-item ${i===activeMessage?'active':''} ${m.unread?'unread':''}" onclick="selectMessage(${i})">
+      <div class="message-avatar" style="background:${m.color}">${m.sender.split(' ').map(w=>w[0]).join('')}</div>
+      <div class="message-meta">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="message-sender">${m.sender}</div>
+          <div class="message-time">${m.time}</div>
+        </div>
+        <div class="message-subject">${m.subject}</div>
+        <div class="message-preview">${m.preview}</div>
+      </div>
+      ${m.unread?'<div style="width:8px;height:8px;border-radius:50%;background:var(--gov-blue);flex-shrink:0;margin-top:4px"></div>':''}
+    </div>`).join('');
+}
+function selectMessage(i) {
+  activeMessage = i;
+  renderMessages();
+  const m = MESSAGES[i];
+  document.getElementById('thread-title').textContent = m.subject;
+  m.unread = false;
+}
+
+// ============================================================
+// MODAL
+// ============================================================
+function openRequestModal() {
+  document.getElementById('request-modal').classList.add('open');
+  document.getElementById('modal-dataset').focus();
+}
+function closeRequestModal() {
+  document.getElementById('request-modal').classList.remove('open');
+  clearFormErrors();
+}
+document.getElementById('request-modal').addEventListener('click', e => { if(e.target===e.currentTarget) closeRequestModal(); });
+document.getElementById('open-request-modal').addEventListener('click', openRequestModal);
+
+function clearFormErrors() {
+  ['err-dataset','err-purpose','err-legal'].forEach(id => document.getElementById(id).style.display='none');
+  ['modal-dataset','modal-purpose','modal-legal-basis'].forEach(id => document.getElementById(id).classList.remove('error'));
+}
+function submitRequest() {
+  clearFormErrors();
+  let valid = true;
+  if(!document.getElementById('modal-dataset').value.trim()) { document.getElementById('err-dataset').style.display='flex'; document.getElementById('modal-dataset').classList.add('error'); valid=false; }
+  if(!document.getElementById('modal-purpose').value.trim()) { document.getElementById('err-purpose').style.display='flex'; document.getElementById('modal-purpose').classList.add('error'); valid=false; }
+  if(!document.getElementById('modal-legal-basis').value) { document.getElementById('err-legal').style.display='flex'; document.getElementById('modal-legal-basis').classList.add('error'); valid=false; }
+  if(!valid) return;
+  closeRequestModal();
+  showToast('Access request submitted successfully. You will be notified within 5 working days.', 'success');
+  document.getElementById('modal-purpose').value='';
+  document.getElementById('modal-legal-basis').value='';
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg, type='info') {
+  const container = document.getElementById('toast-container');
+  const toast = document.createElement('div');
+  const icons = { success:'✓', error:'✕', info:'ℹ' };
+  toast.className = `toast ${type}`;
+  toast.innerHTML = `<span>${icons[type]||'ℹ'}</span><span>${msg}</span>`;
+  container.appendChild(toast);
+  setTimeout(() => { toast.style.animation='fadeOut .3s ease forwards'; setTimeout(()=>toast.remove(),300); }, 4000);
+}
+
+// ============================================================
+// ANALYTICS CHARTS (Canvas API)
+// ============================================================
+function renderAnalyticsCharts() {
+  drawTrendsChart();
+  drawDeptDonut();
+  drawTopDatasetsBar();
+  drawHeatmap();
+}
+
+function drawTrendsChart() {
+  const canvas = document.getElementById('trends-chart');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * devicePixelRatio;
+  canvas.height = canvas.height * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  const W = canvas.offsetWidth, H = 220;
+  const submitted = [68,75,82,91,88,95,102,109,98,115,124,118];
+  const approved =  [42,48,55,61,58,64,72,78,68,82,91,87];
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const pad = {l:40,r:20,t:20,b:30};
+  const chartW = W-pad.l-pad.r, chartH = H-pad.t-pad.b;
+  const maxVal = 140;
+
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#eee'; ctx.lineWidth=1;
+  for(let i=0;i<=5;i++) {
+    const y = pad.t + chartH - (i/5)*chartH;
+    ctx.beginPath(); ctx.moveTo(pad.l,y); ctx.lineTo(pad.l+chartW,y); ctx.stroke();
+    ctx.fillStyle=getComputedStyle(document.documentElement).getPropertyValue('--text-hint').trim()||'#6f777b';
+    ctx.font='10px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(Math.round(i/5*maxVal), pad.l-6, y+3);
+  }
+
+  function drawLine(data, color, fill) {
+    const pts = data.map((v,i)=>({ x: pad.l + i/(data.length-1)*chartW, y: pad.t + chartH - (v/maxVal)*chartH }));
+    if(fill) {
+      ctx.beginPath(); ctx.moveTo(pts[0].x, pad.t+chartH);
+      pts.forEach(p=>ctx.lineTo(p.x,p.y));
+      ctx.lineTo(pts[pts.length-1].x, pad.t+chartH);
+      ctx.closePath();
+      const grad = ctx.createLinearGradient(0,pad.t,0,pad.t+chartH);
+      grad.addColorStop(0, color+'33'); grad.addColorStop(1, color+'00');
+      ctx.fillStyle=grad; ctx.fill();
+    }
+    ctx.beginPath(); ctx.moveTo(pts[0].x,pts[0].y);
+    pts.forEach(p=>ctx.lineTo(p.x,p.y));
+    ctx.strokeStyle=color; ctx.lineWidth=2.5; ctx.lineJoin='round'; ctx.stroke();
+    pts.forEach(p=>{ ctx.beginPath(); ctx.arc(p.x,p.y,3,0,Math.PI*2); ctx.fillStyle=color; ctx.fill(); });
+  }
+
+  drawLine(submitted,'#1d70b8',true);
+  drawLine(approved,'#00703c',true);
+
+  months.forEach((m,i)=>{
+    const x = pad.l + i/(months.length-1)*chartW;
+    ctx.fillStyle='#6f777b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(m, x, pad.t+chartH+16);
+  });
+
+  // Legend
+  [['#1d70b8','Submitted'],['#00703c','Approved']].forEach(([c,l],i)=>{
+    const x=W-140+i*70;
+    ctx.beginPath(); ctx.rect(x,8,12,3); ctx.fillStyle=c; ctx.fill();
+    ctx.fillStyle='#505a5f'; ctx.font='10px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(l,x+16,11);
+  });
+}
+
+function drawDeptDonut() {
+  const canvas = document.getElementById('dept-chart');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * devicePixelRatio;
+  canvas.height = canvas.height * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  const W = canvas.offsetWidth, H = 220;
+  const cx=W/2, cy=H/2-10, r=75, ri=48;
+  const data = [
+    {label:'DWP',val:22,color:'#1d70b8'},
+    {label:'HMRC',val:15,color:'#003078'},
+    {label:'NHS',val:20,color:'#d4351c'},
+    {label:'ONS',val:18,color:'#00703c'},
+    {label:'MHCLG',val:13,color:'#f47738'},
+    {label:'Other',val:12,color:'#6f42c1'},
+  ];
+  const total = data.reduce((s,d)=>s+d.val,0);
+  let angle = -Math.PI/2;
+  data.forEach(d => {
+    const slice = (d.val/total)*Math.PI*2;
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,r,angle,angle+slice);
+    ctx.closePath(); ctx.fillStyle=d.color; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(cx,cy);
+    ctx.arc(cx,cy,ri,angle,angle+slice);
+    ctx.fillStyle='white'; ctx.fill();
+    const mid=angle+slice/2;
+    angle+=slice;
+  });
+  ctx.beginPath(); ctx.arc(cx,cy,ri,0,Math.PI*2); ctx.fillStyle='white'; ctx.fill();
+  ctx.fillStyle='#0b0c0c'; ctx.font='bold 14px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('1,284',cx,cy+4); ctx.font='10px sans-serif'; ctx.fillStyle='#6f777b';
+  ctx.fillText('Requests',cx,cy+18);
+
+  data.forEach((d,i)=>{
+    const row=Math.floor(i/2), col=i%2;
+    const lx=8+col*80, ly=H-50+row*18;
+    ctx.beginPath(); ctx.rect(lx,ly,10,10); ctx.fillStyle=d.color; ctx.fill();
+    ctx.fillStyle='#0b0c0c'; ctx.font='10px sans-serif'; ctx.textAlign='left';
+    ctx.fillText(`${d.label} (${d.val}%)`,lx+13,ly+8);
+  });
+}
+
+function drawTopDatasetsBar() {
+  const canvas = document.getElementById('top-datasets-chart');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * devicePixelRatio;
+  canvas.height = canvas.height * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  const W = canvas.offsetWidth, H = 200;
+  const data = [
+    {label:'Universal Credit Claimants',val:186},
+    {label:'NHS Hospital Episodes',val:164},
+    {label:'Census 2021 Output Areas',val:152},
+    {label:'Land Registry Price Paid',val:143},
+    {label:'School Performance Tables',val:128},
+    {label:'Planning Applications',val:117},
+    {label:'Prison Population Stats',val:104},
+    {label:'Carbon Emissions by Sector',val:98},
+    {label:'Road Traffic (STATS19)',val:87},
+    {label:'Police Recorded Crime',val:76},
+  ].reverse();
+  const maxVal = 200;
+  const rowH = H/data.length, labelW = 200, barW = W-labelW-40;
+  ctx.clearRect(0,0,W,H);
+  data.forEach((d,i)=>{
+    const y=i*rowH;
+    ctx.fillStyle='#f3f2f1';
+    ctx.fillRect(labelW,y+2,barW,rowH-4);
+    ctx.fillStyle='#1d70b8';
+    ctx.fillRect(labelW,y+4,(d.val/maxVal)*barW,rowH-8);
+    ctx.fillStyle='#0b0c0c'; ctx.font='11px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(d.label, labelW-8, y+rowH/2+4);
+    ctx.fillStyle='white'; ctx.font='bold 10px sans-serif'; ctx.textAlign='left';
+    if((d.val/maxVal)*barW > 30) ctx.fillText(d.val, labelW+6, y+rowH/2+4);
+    else { ctx.fillStyle='#505a5f'; ctx.fillText(d.val, labelW+(d.val/maxVal)*barW+4, y+rowH/2+4); }
+  });
+}
+
+function drawHeatmap() {
+  const depts = ['DWP','HMRC','NHS','ONS','Home Office','MHCLG','MOJ','DfE','DfT','DESNZ'];
+  const container = document.getElementById('heatmap-container');
+  const data = depts.map(()=>depts.map(()=>Math.floor(Math.random()*40)));
+  // Force some strong links
+  const links = [[0,1,35],[0,2,28],[1,3,22],[2,3,18],[3,4,15],[4,6,24],[0,7,19],[2,4,31],[5,0,27],[3,8,14],[6,3,20],[9,0,16]];
+  links.forEach(([a,b,v])=>{ data[a][b]=v; data[b][a]=v; });
+  depts.forEach((d,i)=>data[i][i]=0);
+
+  const maxV = 40;
+  let html = `<table class="heatmap-table"><thead><tr><th></th>${depts.map(d=>`<th style="font-size:9px;writing-mode:vertical-rl;transform:rotate(180deg);padding:4px 2px">${d}</th>`).join('')}</tr></thead><tbody>`;
+  data.forEach((row,ri)=>{
+    html+=`<tr><th style="text-align:right;white-space:nowrap;font-size:11px;padding-right:8px">${depts[ri]}</th>`;
+    row.forEach((v,ci)=>{
+      if(ri===ci){ html+=`<td style="background:#f3f2f1;color:var(--border)">—</td>`; return; }
+      const intensity = v/maxV;
+      const alpha = 0.1 + intensity*0.8;
+      const color = `rgba(29,112,184,${alpha})`;
+      const textColor = intensity > 0.5 ? 'white' : '#0b0c0c';
+      html+=`<td style="background:${color};color:${textColor}" title="${depts[ri]} → ${depts[ci]}: ${v} agreements">${v||''}</td>`;
+    });
+    html+=`</tr>`;
+  });
+  html+='</tbody></table>';
+  container.innerHTML = html;
+}
+
+// ============================================================
+// OWNER BAR CHART
+// ============================================================
+function drawOwnerBarChart() {
+  const canvas = document.getElementById('owner-bar-chart');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * devicePixelRatio;
+  canvas.height = canvas.height * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  const W = canvas.offsetWidth, H = 180;
+  const data = [4,7,5,8,12,9,14,11,8,15,18,16];
+  const months=['J','F','M','A','M','J','J','A','S','O','N','D'];
+  const pad={l:30,r:10,t:10,b:25};
+  const chartW=W-pad.l-pad.r, chartH=H-pad.t-pad.b;
+  const barW=chartW/data.length*0.6, barGap=chartW/data.length;
+  const maxV=20;
+  ctx.clearRect(0,0,W,H);
+  data.forEach((v,i)=>{
+    const bh=(v/maxV)*chartH;
+    const x=pad.l+i*barGap+(barGap-barW)/2;
+    const y=pad.t+chartH-bh;
+    const grad=ctx.createLinearGradient(0,y,0,y+bh);
+    grad.addColorStop(0,'#1d70b8'); grad.addColorStop(1,'#003078');
+    ctx.fillStyle=grad; ctx.beginPath();
+    ctx.roundRect(x,y,barW,bh,2); ctx.fill();
+    ctx.fillStyle='#6f777b'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(months[i],pad.l+i*barGap+barGap/2,H-8);
+  });
+}
+
+// ============================================================
+// NETWORK DIAGRAM (Policy Maker Dashboard)
+// ============================================================
+function drawNetworkDiagram() {
+  const canvas = document.getElementById('network-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * devicePixelRatio;
+  canvas.height = 400 * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  const W = canvas.offsetWidth, H = 400;
+  const nodes = [
+    {label:'DWP',x:0.5,y:0.5,color:'#1d70b8',size:36},
+    {label:'HMRC',x:0.22,y:0.3,color:'#003078',size:28},
+    {label:'NHS',x:0.75,y:0.28,color:'#d4351c',size:30},
+    {label:'ONS',x:0.5,y:0.15,color:'#00703c',size:26},
+    {label:'Home Office',x:0.15,y:0.65,color:'#6f42c1',size:24},
+    {label:'MHCLG',x:0.8,y:0.62,color:'#f47738',size:24},
+    {label:'MOJ',x:0.25,y:0.78,color:'#17a2b8',size:22},
+    {label:'DfE',x:0.72,y:0.8,color:'#e83e8c',size:22},
+    {label:'DfT',x:0.5,y:0.85,color:'#fd7e14',size:20},
+  ];
+  const edges = [[0,1,0.8],[0,2,0.6],[0,3,0.7],[1,3,0.5],[2,3,0.5],[0,4,0.4],[0,5,0.5],[4,6,0.6],[5,7,0.4],[5,8,0.3],[0,6,0.3],[0,7,0.3]];
+
+  ctx.fillStyle='#0a192f'; ctx.fillRect(0,0,W,H);
+
+  // Stars bg
+  for(let i=0;i<80;i++){
+    ctx.beginPath(); ctx.arc(Math.random()*W,Math.random()*H,Math.random()*.8+.2,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${Math.random()*.3+.1})`; ctx.fill();
+  }
+
+  edges.forEach(([a,b,strength])=>{
+    const na=nodes[a], nb=nodes[b];
+    const grad=ctx.createLinearGradient(na.x*W,na.y*H,nb.x*W,nb.y*H);
+    grad.addColorStop(0,na.color+'80'); grad.addColorStop(1,nb.color+'80');
+    ctx.beginPath(); ctx.moveTo(na.x*W,na.y*H); ctx.lineTo(nb.x*W,nb.y*H);
+    ctx.strokeStyle=grad; ctx.lineWidth=strength*3; ctx.stroke();
+  });
+
+  nodes.forEach(n=>{
+    const x=n.x*W, y=n.y*H;
+    const glow=ctx.createRadialGradient(x,y,0,x,y,n.size+8);
+    glow.addColorStop(0,n.color+'60'); glow.addColorStop(1,'transparent');
+    ctx.beginPath(); ctx.arc(x,y,n.size+8,0,Math.PI*2); ctx.fillStyle=glow; ctx.fill();
+    ctx.beginPath(); ctx.arc(x,y,n.size,0,Math.PI*2);
+    const grad=ctx.createRadialGradient(x-n.size*.3,y-n.size*.3,0,x,y,n.size);
+    grad.addColorStop(0,n.color+'ff'); grad.addColorStop(1,n.color+'99');
+    ctx.fillStyle=grad; ctx.fill();
+    ctx.fillStyle='white'; ctx.font=`bold ${Math.max(10,n.size*.35)}px sans-serif`;
+    ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillText(n.label,x,y);
+  });
+}
+
+// ============================================================
+// LINEAGE DIAGRAM
+// ============================================================
+function drawLineageDiagram() {
+  const canvas = document.getElementById('lineage-canvas');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  canvas.width = canvas.offsetWidth * devicePixelRatio;
+  canvas.height = 180 * devicePixelRatio;
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  const W = canvas.offsetWidth, H = 180;
+  ctx.clearRect(0,0,W,H);
+
+  const nodes = [
+    {label:'Source\nAdministrative\nSystem',x:0.1,color:'#003078'},
+    {label:'ETL\nPipeline',x:0.3,color:'#6f42c1'},
+    {label:'Staging\nDatabase',x:0.5,color:'#00703c'},
+    {label:activeDataset?.title?.split(' ').slice(0,2).join('\n')||'Dataset',x:0.7,color:'#1d70b8'},
+    {label:'Downstream\nConsumers',x:0.9,color:'#f47738'},
+  ];
+
+  nodes.forEach((n,i)=>{
+    if(i<nodes.length-1){
+      const nx=n.x*W, nx2=nodes[i+1].x*W, cy=H/2;
+      ctx.beginPath(); ctx.moveTo(nx+55,cy); ctx.lineTo(nx2-55,cy);
+      ctx.strokeStyle='#b1b4b6'; ctx.lineWidth=2; ctx.setLineDash([4,3]); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.beginPath(); ctx.moveTo(nx2-55,cy-5); ctx.lineTo(nx2-55+8,cy); ctx.lineTo(nx2-55,cy+5);
+      ctx.fillStyle='#b1b4b6'; ctx.fill();
+    }
+  });
+
+  nodes.forEach(n=>{
+    const x=n.x*W, y=H/2;
+    ctx.beginPath(); ctx.roundRect(x-50,y-30,100,60,6);
+    ctx.fillStyle=n.color; ctx.fill();
+    ctx.fillStyle='white'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+    const lines=n.label.split('\n');
+    lines.forEach((l,li)=>ctx.fillText(l,x,y-8+(li-(lines.length-1)/2)*14));
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+function init() {
+  renderCatalogue(DATASETS);
+  renderDashboard('requestor');
+  renderRequests('all');
+  renderMessages();
+}
+
+init();
+</script>
+</body>
+</html>
